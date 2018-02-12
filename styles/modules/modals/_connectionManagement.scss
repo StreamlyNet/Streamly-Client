@@ -1,0 +1,115 @@
+.connectionManagement {
+  .configurations {
+    position: relative;
+
+    .configurationContainer {
+      min-height: 500px;
+    }
+    
+    .statusBarOuterWrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 115px;
+      height: 58px;
+
+      .statusBarMessage {
+        height: 100%;
+
+        .btnClose {
+          position: absolute;
+          right: 6px;
+          top: -4px;
+
+          span {
+            font-size: 2.8rem;
+          }
+        }
+
+        .connectFailed {
+          border-left-width: 4px;
+          border-left-style: solid;
+
+          .statusMsg {
+            padding-right: 10px; 
+          }          
+        }
+
+        .connectingMsg {
+          padding-left: 25px;
+
+          .spinner {
+            margin-right: $padSm;
+            transform: translateX(-25px);
+          }
+        }
+      }
+    }
+
+    // this was the least ugly way I found to do this :(
+    .borderFillIn {
+      position: absolute;
+      right: -115px;
+      top: 58px;
+      width: 150px;
+    }
+
+    .configuration {
+      position: relative;
+      height: 37px;
+
+      .btnConnectCancel, .btnDisconnect {
+        width: 140px;
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+        word-break: break-word;
+      }
+
+      &.failedConnectAttempt {
+        border-left-width: 4px;
+        border-left-style: solid;
+      }
+
+      .errorBorder {
+        width: 4px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+      }
+
+      .deleteConfirm {
+        display: block;
+        position: absolute;
+        right: 83px;
+        width: 245px;
+        transform: translateY(7px);
+        z-index: 1;
+      }
+    }
+  }
+
+  .configurationForm {
+    .torMessage {
+      margin-top: 15px;
+      padding-left: 33px;
+      background-image: url(../../imgs/icon-tor.png);
+      background-position: 10px 12px;
+      background-size: 15px auto;
+      background-repeat: no-repeat;
+    }
+
+    .torDetails {
+      padding-top: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .saveConfirmBox {
+      @include center(true, false);
+      bottom: 0;
+      margin-bottom: 55px;
+    }
+  }  
+}

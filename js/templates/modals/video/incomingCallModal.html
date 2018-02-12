@@ -1,0 +1,13 @@
+<div class="container">
+    <div class="incomingCall__overlay"></div>
+    <div class="incomingCall__header">Incoming Call</div>
+    <div class="incomingCall__profileContainer">
+        <div class="incomingCall__image" style="<%= ob.avatarURL %>"></div>
+        <div class="incomingCall__data incomingCall__username" title="<%= ob.remotePeerName %>"><%= ob.remotePeerName %></div>
+        <div class="incomingCall__data"><span class="incomingCall__listingLabel">Listing: </span><span class="incomingCall__listingText" title="<%= ob.listingName %>"><%= ob.listingName %></span></div>
+    </div>
+    <div class="incomingCall__buttonsContainer">
+        <button title="Decline" class="btn btn-default decline"><i class="fa fa-phone end-call" aria-hidden="true"></i></button>
+        <button title="Accept" class="btn btn-default accept"><i class="fa fa-phone" aria-hidden="true"></i></button>
+    </div>
+</div>

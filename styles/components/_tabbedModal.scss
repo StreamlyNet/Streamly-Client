@@ -1,0 +1,55 @@
+.tabbedModal {
+  .modalContent {
+    width: 950px;
+
+    .cornerTR {
+      right: 25px;
+    }
+  }
+
+  .tabColumn {
+    width: 200px;
+    flex-shrink: 0;
+
+    .tab {
+      position: relative;
+
+      &.active {
+        font-weight: bold;
+
+        &::after {
+          content: "";
+          display: block;
+          border-width: 1px;
+          border-style: solid;
+          height: 100%;
+          position: absolute;
+          left: -16px;
+          top: 0;
+        }
+      }
+    }
+  }
+
+  .tabContent {
+    max-width: 757px;
+
+    .modalContentCornerBtn {
+      right: 15px;
+      top: 8px;
+      font-size: $tx5;
+      position: absolute;
+    }
+  }
+
+  &.fixedNav {
+    .tabColumn {
+      position: fixed;
+      top: 57px;
+    }
+
+    .tabContent {
+      margin-left: 210px;
+    }
+  }
+}

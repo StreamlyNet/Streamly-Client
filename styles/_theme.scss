@@ -1,0 +1,472 @@
+// theme color styles. All elements that have a background color should have one of these applied.
+// The text class will be applied to the body element, if text is colored differently, apply it to the nearest
+// parent container.
+
+// any color that should change on hover, active, etc. should have a rule for &.clrHover, and the
+// element that should change should have a .clrHover class on it.
+
+/* default for inputs with no color class */
+input,
+select,
+textarea,
+button,
+.trumbowyg div[contenteditable] {
+  &:focus {
+    border-color: $border3;
+  }
+}
+
+.clrP {
+  background-color: $primary;
+
+  input[type="radio"] + label:before,
+  .fauxRadioBtn {
+    background-color: $secondary;
+  }
+
+  input[type="radio"]:checked + label:before,
+  .fauxRadioBtn.active,
+  .fauxRadioBtn[data-state='selected'] {
+    box-shadow: inset 0 0 0 3px $secondary;
+  }
+}
+
+.clrS {
+  background-color: #d5dde1;;
+
+  input[type="radio"] + label:before,
+  .fauxRadioBtn {
+    background-color: $primary;
+  }
+
+  input[type="radio"]:checked + label:before,
+  .fauxRadioBtn.active,
+  .fauxRadioBtn[data-state='selected'] {
+    box-shadow: inset 0 0 0 3px $primary;
+  }
+}
+
+input[type=range][class~="clrP"] {
+  &::-webkit-slider-runnable-track {
+    background-color: $secondary;
+    border-color: $border;
+  }
+  &:focus::-webkit-slider-runnable-track {
+    background-color: $secondary;
+  }
+  &::-webkit-slider-thumb {
+    background-color: $primary;
+  }
+}
+
+input[type=range][class~="clrS"] {
+  &::-webkit-slider-runnable-track {
+    background-color: $primary;
+    border-color: $border;
+  }
+  &:focus::-webkit-slider-runnable-track {
+    background-color: $primary;
+  }
+  &::-webkit-slider-thumb {
+    background-color: $secondary;
+  }
+}
+
+.clrErr {
+  background-color: $error;
+}
+
+.clrT {
+  @include textColor($text, $text2, $text);
+}
+
+.clrT2 {
+  @include textColor($text2, $text3, $text);
+}
+
+.clrT3 {
+  // links in text color 3 are the same color, or they'd be too hard to see
+  @include textColor($text3, $text3, $text2);
+}
+
+.clrT4 {
+  // links in text color 4 are the same color, or they'd be too hard to see
+  @include textColor($text4, $text4, $text3);
+}
+
+.clrTEm {
+  color: #25b4b0;
+}
+
+.clrTAtt {
+  @include textColor($emphasis1, $emphasis2);
+}
+
+.clrTErr {
+  @include textColor($error);
+}
+
+.clrTAlert {
+  @include textColor($alert);
+}
+
+.clrTOnEmph {
+  @include textColor($textOnEmph);
+}
+
+.clrTEmph1 {
+  color: #25b4b0;
+}
+
+.clrTEmph1Disabled {
+  @include textColor($emphasis1Disabled);
+}
+
+.clrTEmph2 {
+  @include textColor($emphasis2);
+}
+
+.clrBr {
+  @include borderColor($border, $border3);
+}
+
+.clrBr2 {
+  @include borderColor($border2, $border3);
+}
+
+.clrBr3 {
+  @include borderColor($border3, $border4);
+}
+
+.clrBr4 {
+  @include borderColor($border4, $border5);
+}
+
+.clrBrT {
+  @include borderColor($text, $text2);
+}
+
+.clrBrDec1 {
+  // decorative border with a shadow to create a faint outline
+  border-color: $textOnEmph;
+  border-width: 2px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.4);
+}
+
+.clrBrEmph1 {
+  border-color: $emphasis1;
+
+  hr {
+    border-color: $emphasis1;
+  }
+}
+
+.clrBrEmph2 {
+  border-color: $emphasis2;
+
+  hr {
+    border-color: $emphasis2
+  }
+}
+
+.clrBrError {
+  border-color: $error;
+
+  hr {
+    border-color: $error
+  }
+}
+
+.clrBAtt1 {
+  background-color: $emphasis1;
+}
+
+.clrBAtt2 {
+  background-color: $emphasis2;
+}
+
+.clrBAttGrad {
+  background: $emphasisGradient;
+
+  &.processing {
+    .spinner {
+      path:first-child {
+        fill: #666;
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: $secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $text3;
+
+  &:hover {
+    background: $text4;
+  }
+
+  &:active {
+    background: $text4;
+  }
+}
+
+
+// select2 dropdowns always use the theme border color.
+// Override them in the view stylesheet if necessary.
+
+.select2-container {
+  .select2-dropdown,
+  .select2-selection {
+    border-color: $border;
+  }
+
+  &.select2-container--focus,
+  &.select2-container--open {
+    border-color: $border3;
+
+    .select2-dropdown,
+    .select2-selection {
+      border-color: $border3;
+    }
+  }
+}
+
+.clrBrBk {
+  background-color: $border;
+}
+
+.clrTx1Br {
+  border-color: $text;
+}
+
+.clrE1 {
+  background-color: $emphasis1;
+}
+
+.clrO {
+  // overlay color
+  background-color: $overlay;
+}
+
+//shadows should be set by the theme too
+.clrSh1 {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.clrSh2 {
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+}
+
+.clrSh3 {
+  box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+.white{
+    color: #fff;
+}
+
+.whiteBackground{
+    background-color: #fff;
+}
+
+.required::after {
+  color: $error;
+}
+
+.select2-container--focus .select2-selection__rendered {
+  border-color: $border3;
+}
+
+// select2 with tags
+.select2Tags + .select2-container {
+
+  &.select2-container--default {
+    .select2-selection--multiple {
+      border: none;
+      background: none;
+
+      .select2-selection__rendered {
+        border: 1px solid $border;
+        background: $primary;
+      }
+    }
+
+    &.select2-container--focus .select2-selection--multiple .select2-selection__rendered {
+      border-color: $border3;
+    }
+  }
+
+  .select2-selection__choice {
+    background-color: $primary;
+    border-color: $border;
+    color: $text;
+  }
+
+  .select2-selection__choice__remove {
+    color: $text;
+  }
+}
+
+.tagsDropdown {
+  .select2-container--open .select2-dropdown {
+    border-color: $border3;
+  }
+}
+
+#appFrame {
+  .selectize-control {
+    .items {
+      & > *:not(input) {
+        border-color: $border;
+        background-color: $primary;
+      }
+    }
+  }
+
+  .selectize-dropdown-content {
+    & > * {
+      background-color: $primary;
+
+      &.active {
+        background-color: $selection;
+        color: $textOnSelection;
+      }
+    }
+  }
+}
+
+.toolTip {
+  &:before {
+    background-color: $primary;
+    border-color: $border;
+    color: $text;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  }
+
+  &:after {
+    background-color: $primary;
+    border-color: $border;
+  }
+}
+
+.chatOpen #appFrame #chatContainer {
+  background-color: $primary;
+  border-color: $border4;
+}
+
+.chatHead {
+  &.active {
+    .headContent {
+      border-color: $border3;
+    }
+  }
+}
+
+.wallet {
+  .walletTransactions {
+    .statusIconCol {
+      .ion-alert-circled {
+        color: $alert;
+      }
+    }
+  }
+}
+
+.popInMessage {
+  .ion-alert-circled {
+    color: $alert;
+  }
+}
+
+.orderDetail {
+  .discussionTab {
+    .convoMessage {
+      .msgContentBox.read::after {
+        background-color: $emphasis1;
+      }
+    }
+  }
+}
+
+.sortIcon {
+  &::after, &::before {
+    border-color: transparent;
+  }
+
+  &::after {
+    border-bottom-color: $text;
+  }
+
+  &::before {
+    border-top-color: $text2;
+  }
+
+  &.ascending {
+    &::after {
+      border-bottom-color: $text2;
+    }
+
+    &::before {
+      border-top-color: $text;
+    }
+  }
+}
+
+.renderjson {
+  a.disclosure {
+    color: $text;
+  }
+}
+
+.stateProgressBar {
+  .stateSection {
+    .stateCircle {
+      background-color: $primary;
+      border-color: $border;
+
+      .ion-ios-checkmark-empty {
+        color: $primary;
+      }
+    }
+
+    .stateTrack {
+      background-color: $primary;
+      border-color: $border;
+    }
+
+    .stateCircleBorderFillIn {
+      background-color: $primary;
+    }
+
+    &.active {
+      .stateCircle, .stateTrack {
+        background-color: $text;
+      }
+    }
+  }
+}
+
+.orderDetail {
+  .fulfilledEvent {
+    .ion-cube {
+      color: #64452c;
+    }
+  }
+
+  .disputeOpenedBadge, .statusIconCol {
+    .ion-alert-circled {
+      color: #ed732a;
+    }
+  }
+}
+
+.notifications {
+  .tabs {
+    & > .active, & > :hover {
+      color: $text;
+    }
+  }
+}

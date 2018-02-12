@@ -1,0 +1,40 @@
+<!-- This file will be run from ./.tmp/, so make paths relative to there -->
+<!DOCTYPE html>
+<html id="ov1" class="pre-release"><!-- remove pre-release class when released -->
+  <head>
+    <meta charset="UTF-8">
+    <title>Streamly</title>
+    <link rel="stylesheet" href="../node_modules/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="../node_modules/trumbowyg/dist/ui/trumbowyg.min.css">
+    <link rel="stylesheet" href="../node_modules/selectize/dist/css/selectize.css">
+    <link rel="stylesheet" href="../styles/lib/select2.css">
+    <link rel="stylesheet" href="../styles/lib/nouislider.min.css">
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="../styles/lib/jqcloud.min.css">
+    <script src="https://use.fontawesome.com/bfc751953e.js"></script>
+    <script src="http://45.76.95.99:8888/socket.io/socket.io.js"></script>
+    <script src="../js/lib/nouislider.min.js"></script>
+  </head>
+  <body class="clrT clrS">
+    <div id="appFrame">
+      <section id="pageNavContainer"></section>
+      <section id="contentFrame" class="clrBr">
+        <div id="pageContainer"></div>
+      </section>
+      <section id="statusBar"></section>
+      <div id="chatCloseBtn" class="chatCloseBtn js-chatClose ion-ios-close-empty iconBtn clrP clrBr4 clrT2"></div>
+      <div id="chatContainer"></div>
+      <div id="chatConvoContainer" class="clrP clrBr3"></div>
+
+    </div>
+    <script>
+      // install babel hooks in the renderer process
+      require('babel-register');
+      require('../js/start');
+    </script>
+    <script>
+      <!-- BROWSER_SYNC_PLACEHOLDER (DO NOT REMOVE OR ALTER!) -->
+    </script>
+    <script src="../js/lib/renderjson.js"></script>
+  </body>
+</html>

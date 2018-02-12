@@ -1,0 +1,152 @@
+<div class="popInMessageHolder js-popInMessages"></div>
+
+<div class="topControls withEndBtn flex">
+  <% if (ob.vendor) { %>
+    <div class="contentBox clrP clrSh3 clrBr clrT">
+      <div class="padSm gutterHSm overflowAuto margRSm flexVCent">
+        <a class="clrBr2 clrSh1 disc storeOwnerAvatar flexNoShrink js-storeOwnerAvatar" style="<%= ob.getAvatarBgImage(ob.vendor.avatar) %>"></a>
+        <p class="txUnl tx3 clamp"><%= ob.vendor.name %></p>
+        <a class="link flexNoShrink tx6 js-goToStore"><% print(ob.openedFromStore ? ob.polyT('listingDetail.returnToStore'): ob.polyT('listingDetail.goToStore')) %></a>
+      </div>
+    </div>
+  <% } %>
+  <% if (ob.ownListing) { %>
+    <div class="flexNoShrink" style="margin-left: auto">
+      <div class="btnStrip clrSh3">
+        <button class="btn js-editListing clrP clrBr"><%= ob.polyT('listingDetail.edit') %></button>
+        <button class="btn js-cloneListing clrP clrBr"><%= ob.polyT('listingDetail.clone') %></button>
+        <%= ob.processingButton({
+          className: 'btn js-deleteListing clrP clrBr',
+          btnText: ob.polyT('listingDetail.delete')
+        }) %>
+      </div>
+    </div>
+    <div class="js-deleteConfirmedBox confirmBox deleteConfirm tx5 arrowBoxTop clrBr clrP clrT hide">
+      <div class="tx3 txB rowSm"><%= ob.polyT('listingDetail.confirmDelete.title') %></div>
+      <p><%= ob.polyT('listingDetail.confirmDelete.body') %></p>
+      <hr class="clrBr row" />
+      <div class="flexHRight flexVCent gutterHLg buttonBar">
+        <a class="js-deleteConfirmCancel"><%= ob.polyT('listingDetail.confirmDelete.btnCancel') %></a>
+        <a class="btn button--cian js-deleteConfirmed"><%= ob.polyT('listingDetail.confirmDelete.btnConfirm') %></a>
+      </div>
+    </div>
+  <% } else {%>
+    <div class="flexNoShrink" style="margin-left: auto">
+      <div class="js-socialBtns"></div>
+    </div>
+  <% } %>
+</div>
+
+
+<div class="listingContent flexColRow gutterVMd2">
+  <div class="contentBox padLg clrP clrBr clrSh3">
+    <div class="flex gutterHLg">
+      <h2 class="txUnb flexExpand"><%= ob.item.title %></h2>
+      <h2 class="txUnb flexNoShrink js-price">
+        <% if(ob.item.price == 0) {%>
+        FREE
+        <%}else{ %>
+        <%= ob.convertAndFormatCurrency(ob.item.price, ob.metadata.pricingCurrency, ob.displayCurrency) %>
+        <%} %>
+      </h2>
+    </div>
+    <div class="flex gutterHLg">
+      <div class="mainImageWrapper">
+        <div class="mainImage clrBr js-gotoPhotos"
+        <% if (ob.item.images.length) { %>
+          style="background-image: url(<%= ob.getServerUrl(`ob/images/${ob.isHiRez() ? ob.item.images[0].large : ob.item.images[0].medium}`) %>), url('../imgs/defaultItem.png')"
+        <% } else { %>
+          style="background-image: url('../imgs/defaultItem.png')"
+        <% } %>
+        ></div>
+        <div class="txCtr">
+          <a class="tx5 js-gotoPhotos">
+            <u><%= ob.polyT('listingDetail.viewPhotos', { count: ob.item.images.length, smart_count: ob.item.images.length }) %></u>
+          </a>
+        </div>
+      </div>
+      <div class="flexExpand">
+        <div class="buyBox clrP clrBr">
+          <div class="flexColRows flexHCent gutterV">
+              <%
+               var disabled = '';
+               if(ob.currentUserPid === ob.vendor.peerID){
+                  disabled = 'disabled';
+               }
+              %>
+            <button <%= disabled %> class="btnHg button--cian js-callBtn">
+              <%= ob.polyT('listingDetail.requestVideo') %>
+            </button>
+            <div class="flexHCent gutterH">
+              <div class="tx6 js-rating rating"></div>
+              <% if(ob.shipsFreeToMe) { %>
+              <div class="txCtr">
+                <a class="clrE1 clrTOnEmph phraseBox txNoUnd js-freeShippingLabel"><%= ob.polyT('listingDetail.freeShippingBanner') %></a>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <hr class="rowLg">
+        <h5><%= ob.polyT('listingDetail.tags') %></h5>
+        <div class="tagWrapper">
+          <% ob.item.tags.forEach(function(tag){
+          print(`<a class="btn tag clrSh2 clrBr" href="#search?q=${tag}">#${ob.parseEmojis(tag)}</a>`);
+          }); %>
+          <% if(!ob.item.tags.length) { print(`<i class="clrT2">${ob.polyT('listingDetail.noTags')}</i>`) } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contentBox descriptionSection padLg clrP clrBr clrSh3">
+    <h2 class="txUnb"><%= ob.polyT('listingDetail.description') %></h2>
+    <%= ob.item.description %>
+    <% if(!ob.item.description) { print(`<i class="clrT2">${ob.polyT('listingDetail.noDescription')}</i>`) } %>
+  </div>
+
+  <% if (ob.item.images.length) { %>
+    <div class="contentBox clrSh3 photoSection js-photoSection">
+      <div class="flexCent photoSelected js-photoSelected">
+        <img class="photoSelectedInner js-photoSelectedInner">
+      </div>
+      <% if (ob.item.images.length > 1) { %>
+        <button class="btn ion-ios-arrow-left photoPrev js-photoPrev"></button>
+        <button class="btn ion-ios-arrow-right photoNext js-photoNext"></button>
+      <% } %>
+      <% if(ob.item.images.length > 1) { %>
+        <div class="photoStrip flex gutterH">
+          <% ob.item.images.forEach(function(image, index){
+          const chk = index === 0 ? "checked" : "";
+          print(`<input type="radio" name="photoStripThumbnails" class="js-photoSelect" id="photoStrip${index}" ${chk}>`);
+          print(`<label style="background-image: url(${ob.getServerUrl(`ob/images/${ob.isHiRez() ? image.small : image.tiny}`)}" for="photoStrip${index}"></label>`);
+          }); %>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+
+<div class="js-reviews"></div>
+
+<!-- Attachments are not yet available -->
+<!--
+
+  <div class="contentBox padLg clrP clrBr clrSh3">
+    <h2 class="txUnb"><%= ob.polyT('listingDetail.attachments') %></h2>
+    Placeholder for Attachments
+  </div>
+ -->
+
+  <div class="contentBox padLg clrP clrBr clrSh3 hide">
+    <h2 class="txUnb"><%= ob.polyT('listingDetail.refundPolicy') %></h2>
+    <%= ob.refundPolicy %>
+    <% if (!ob.refundPolicy) { print(`<i class="clrT2">${ob.polyT('listingDetail.noRefundPolicy')}</i>`) } %>
+  </div>
+
+  <div class="contentBox padLg clrP clrBr clrSh3">
+    <h2 class="txUnb"><%= ob.polyT('listingDetail.termsAndConditions') %></h2>
+    <%= ob.termsAndConditions %>
+    <% if (!ob.termsAndConditions) { print(`<i class="clrT2">${ob.polyT('listingDetail.noTermsAndConditions')}</i>`) } %>
+  </div>
+
+</div>

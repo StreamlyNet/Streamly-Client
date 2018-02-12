@@ -1,0 +1,119 @@
+.text-ellipsis{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.incomingCall{
+    .modalContent{
+        margin-top: 35px;
+    }
+    .container{
+        width: 390px;
+        margin: 0 auto;
+        height: 305px;
+        background-color: #4d5c6c;
+        color: white;
+        border-radius: 2px;
+        font-size: 16px;
+        padding: 25px 35px;
+        box-sizing: border-box;
+        position: relative;
+    }
+    .incomingCall__header{
+        text-align: center;
+        font-size: 16px;
+        position: relative;
+        z-index: 1;
+    }
+    .incomingCall__image{
+        float: left;
+        width: 80px;
+        height: 80px;
+        border-radius: 45px;
+        border: 1px solid white;
+        margin-right: 10px;
+        background-position: center;
+        background-size: cover;
+    }
+    .incomingCall__data{
+        float: left;
+        width: calc(100% - 94px);
+        margin-top: 16px;
+        margin-bottom: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        &~.incomingCall__data{
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+    .incomingCall__profileContainer{
+        overflow: hidden;
+        margin-top: 52.5px;//(305(whole height)-50(margins)-20(title)-45(buttons)-85(profile section))/2 = 52.5px
+        position: relative;
+        z-index: 1;
+    }
+    .incomingCall__listingLabel{
+        font-style: italic;
+    }
+    .incomingCall__listingText{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .incomingCall__username{
+        font-weight: 700;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .btn{
+        font-size: 18px;
+        width: 45px;
+        height: 45px;
+        padding: 0;
+        position: relative;
+        margin: 0 3px;
+        border-radius: 25px;
+    }
+    .accept{
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+        float: right;
+        .fa-phone{
+            color: #fff;
+        }
+        &:hover{
+            background-color: #449d44;
+            border-color: #398439;
+        }
+    }
+    .decline{
+        color: #fff;
+        background-color: #d9534f;
+        border-color: #d43f3a;
+        &:hover{
+            background-color: #c9302c;
+            border-color: #ac2925;
+        }
+        .end-call{
+            transform: rotate(135deg);
+            color: #fff;
+        }
+    }
+    .incomingCall__buttonsContainer{
+        position: absolute;
+        width: calc(100% - 70px);
+        bottom: 25px;
+        z-index: 1;
+    }
+    .incomingCall__overlay{
+        position: absolute;
+        height: 138px;
+        width: 100%;
+        left: 0;
+        top: 0;
+        background-color: #36414c;
+    }
+}

@@ -1,0 +1,233 @@
+.settings {
+  form {
+    label {
+      line-height: 2rem;
+    }
+  }
+
+  .modalContent {
+    .tabContent {
+      .tabFormWrapper {
+        .settingsTabFormWrapperInner {
+          width: 100%;
+          top: 0;
+          right: 0;
+          left: 0;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+
+  .avatarPreview {
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 50%;
+
+    .cropit-preview-image-container {
+      border-radius: 50%;
+      background-image: url(../../imgs/defaultAvatar.png);
+      background-position: center;
+      background-size: cover;
+    }
+  }
+
+  .avatarPreview,
+  .headerPreview {
+    width: 120px;
+    height: 120px;
+   // box-sizing: border-box;
+
+    .cropit-preview-image-container {
+      overflow: hidden;
+      z-index: 1; // fixes bug in Chrome where the image inside would not be hidden by border radius.
+    }
+  }
+
+  .headerPreview {
+    width: 474px;
+    height: 136px;
+
+    .cropit-preview-image-container {
+      background-image: url(../../imgs/defaultHeader.png);
+      background-position: center;
+      background-size: cover;
+    }
+  }
+
+  .zoomWarning {
+    display: flex;
+    position: absolute;
+    top: 0;
+    font-size: 1rem;
+    text-align: center;
+    align-items: center;
+  }
+
+  .cropit-image-zoom-input:disabled {
+    opacity: 0; // make unseen but keep it in place for layout
+  }
+
+  .settingsAddresses {
+    .addresses {
+      margin-top: $padMd;
+      margin-bottom: $padMd;
+
+      .addressBox {
+        padding: $padMd;
+        padding-bottom: $padMd + 35 + $padMd; // give bottom aligned button space
+        line-height: 1.3;
+        height: 100%;
+        box-sizing: border-box;
+        border-radius: $corner;
+        position: relative;
+        flex: 0 0 auto;
+
+        .btn {
+          position: absolute;
+          bottom: $padMd;
+          left: $padMd;
+        }
+
+        .notes {
+          margin-top: $pad;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .settingsPage {
+    .colorPicker {
+      width: $formElementHeight;
+      height: $formElementHeight;
+    }
+
+    .socialAccounts {
+      .socialAccount {
+
+        .deleteAccountWrapper {
+          position: absolute;
+          left: 100%;
+          top: 0;
+        }
+      }
+    }
+  }
+
+  .settingsStore {
+
+    .modBox {
+      min-height: 175px;
+
+      .noModsAdded {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+      }
+
+      &.hasMods .noModsAdded {
+        display: none;
+      }
+
+      .browseMore {
+        display: none;
+        position: absolute;
+        right: 0;
+        bottom: 100%;
+        padding: 0;
+        height: 16px;
+        margin-bottom: 7px;
+      }
+
+      &.hasMods .browseMore {
+        display: block;
+      }
+
+      .moderatorCard {
+
+        &:last-child {
+
+          .moderatorCardSeperator {
+            display: none;
+          }
+        }
+
+        &:first-child {
+
+          // always show the first one
+          .moderatorCardSeperator {
+            display: block;
+          }
+        }
+      }
+
+      &.modBoxByID {
+        display: none;
+        min-height: 0;
+
+        &.hasMods,
+        &.processing {
+          display: block;
+          min-height: 95px;
+        }
+
+        // in the modByID container, always hide the last seperator
+        .moderatorCard:last-child {
+          .moderatorCardSeperator {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  .settingsAdvanced {
+    .walletSeed {
+      .seedWarnings {
+        padding-left: 18px;
+      }
+    }
+
+    .smtpSettings {
+      & > * {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .smtpTestButtonWrap {
+        .btnCancelTest {
+          display: none;
+        }
+
+        &.testInProgress {
+          .btnCancelTest {
+            display: inline-flex;
+          }
+
+          .btnTest {
+            display: none;
+          }
+        }
+      }
+
+      .testSmtpStatus {
+        .successMsg {
+          position: relative;
+          padding-left: 5px;
+
+          .successIcon {
+            &:before {
+              font-size: 25px;
+              position: absolute;
+              left: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

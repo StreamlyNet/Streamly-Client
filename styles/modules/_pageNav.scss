@@ -1,0 +1,412 @@
+.pageNav {
+  -webkit-app-region: drag;
+  position: relative;
+  .flexVCent.box.margLSm.posR,.pageNavCenter,.flexVCent.iconPad{
+      opacity: 1;
+      &.disabled{
+          opacity: .5;
+      }
+  }
+  .navBar {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+    .btn,
+    .iconBtn {
+      &:not(.normalBtn) {
+        height: 20px;
+      }
+
+      &.navWalletBtn {
+        padding: 0 10px;
+      }
+    }
+
+    .barBtn {
+      height: 28px;
+      padding: 9px;
+      margin-top: 0;
+    }
+
+    .iconPad {
+      padding: 0 5px;
+    }
+
+    .pageNavCenter  {
+      flex-grow: 1;
+      margin: auto $pad;
+    }
+
+    .navBtn {
+      height: 34px;
+      width: 34px;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    .discoverBtn {
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .discoverCallout {
+      font-size: $tx5;
+      left: -117px;
+      top: 52px;
+
+      .modalOpen & {
+        display: none;
+      }
+    }
+
+    .addressBar {
+      box-sizing: border-box;
+      padding: $padSm $pad;
+      border-width: 1px;
+      border-style: solid;
+      border-radius: $corner;
+      transition: border-color .2s;
+      font-size: $tx5;
+      line-height: 1em; //allow dragging on area above and below the text input in the address bar
+      text-indent: 18px;
+    }
+
+    .bookmarkPage {
+      height: 31px;
+      width: 34px;
+    }
+
+    #AvatarBtn {
+      border-width: 2px;
+      border-style: solid;
+      margin: 5px 0 5px 5px;
+    }
+
+    #testnetFlag {
+      font-size: $tx6;
+      white-space: nowrap;
+    }
+  }
+
+  a, input, .btn, .iconBtn {
+    -webkit-app-region: no-drag;
+  }
+
+  &.notNavigable {
+    a:not(.winControl),
+    button,
+    .btn,
+    .iconBtn,
+    .addressBar,
+    .navListBtn,
+    .discoverBtn,
+    .searchWrapper::after {
+      @include disabled;
+    }
+  }
+
+  .searchWrapper {
+    .torIndicator {
+      display: none;
+      background-image: url(../../imgs/icon-tor.png);
+      background-repeat: no-repeat;
+      background-size: 13px auto;
+      background-position: center;
+      position: absolute;
+      top: -2px;
+      right: 7px;
+      width: 16px;
+      height: 100%;
+    }
+  }
+
+  &.torIndicatorOn {
+    .searchWrapper {
+      .torIndicator {
+        display: block;
+      }
+    }
+  }
+
+  .windowControls {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex-direction: row;
+
+    & > * {
+      flex: 0 0 auto;
+    }
+
+    a {
+      width: 12px;
+      height: 12px;
+      display: inline-block;
+      position: relative;
+    }
+  }
+
+  &.macStyleWindowControls {
+    .windowControlsHolder {
+      order: -1;
+    }
+    .windowControls {
+
+      a {
+        border-radius: 50%;
+        color: #000;
+        text-align: center;
+        margin-right: 8px;
+        width: 13px;
+        height: 13px;
+        box-sizing: border-box;
+        position: relative;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        i {
+          visibility: hidden;
+          font-size: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+        }
+
+        &.navClose {
+          background-color: #FF6058;
+          border: solid 1px #E1473F;
+        }
+
+        &.navMin {
+          background-color: #FFBD2E;
+          border: solid 1px #E0A117;
+        }
+
+        &.navMax {
+          background-color: #29CB41;
+          border: solid 1px #13AD29;
+          margin-right: 0;
+
+          i {
+            display: block;
+            position: absolute;
+            top: 22%;
+            left: 22%;
+            width: 56%;
+            height: 56%;
+            border-radius: 1px;
+            background-color: #003200;
+          }
+
+          i:before {
+            content: '';
+            display: block;
+            position: absolute;
+            background-color: #29CB41;
+            height: 12px;
+            width: 2px;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            transform: rotate(45deg);
+          }
+        }
+      }
+
+      &:hover i {
+        visibility: visible;
+      }
+    }
+
+    .navListBtn.toolTip:before {
+      // shift the tooltip so it doesn't extend off screen
+      left: 85%;
+      transform: translateX(-85%);
+    }
+  }
+
+  &.winStyleWindowControls {
+    .windowControlsHolder {
+      order: 1000; //set to be the last item in the flex container
+      padding-left: $pad;
+    }
+    .windowControls {
+
+      a {
+        margin-right: 8px;
+        height: 34px;
+
+        i {
+          font-size: 34px;
+          line-height:1em;
+        }
+
+        &.navMin {
+          order: 1;
+
+          i {
+            display: block;
+            height: 22px;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            &:before {
+              visibility: hidden;
+            }
+          }
+        }
+
+        &.navClose {
+          order: 3;
+        }
+
+        &.navMax {
+          display: inline-flex;
+          align-items: center;
+          order: 2;
+
+          i {
+            display: block;
+            border-width: 1px;
+            border-style: solid;
+            width: 12px;
+            height: 12px;
+            &:before{
+              visibility: hidden;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .notifUnreadBadge {
+    position: absolute;
+    top: -8px;
+    right: -5px;
+    line-height: 18px;
+    font-size: $tx5b;
+    font-weight: bold;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+
+    &.ellipsisShown {
+      line-height: 14px;
+    }
+  }
+
+  .notifContainer {
+    z-index: 2;
+    width: 420px;
+    right: 40px;
+    padding: 0 $pad $pad;
+  }
+
+  .navListWrapper {
+    z-index: 2;
+    padding: 0 $pad $pad 1px; // give room for border and shadow -
+                              // the left padding needs to be low
+                              // to allow the mouse over / out of
+                              // the Connected Server list item to
+                              // work properly.
+    right: -$pad; // compensate for padding
+
+    .navList {
+      box-sizing: border-box;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-width: 1px;
+      border-style: solid;
+      width: 235px;
+      padding: $pad;
+
+      .listItem {
+        display: flex;
+
+        & > * {
+          flex-shrink: 0;
+          box-sizing: border-box;
+          padding-right: $padSm;
+          word-break: break-all;
+
+          &:last-child {
+            padding-right: 0;
+          }
+
+          &:first-child {
+            // expand the first child to fill as much space as it can.
+            // The second child (shortcut text) will be pushed to the right.
+            flex-shrink: 1;
+            flex-grow: 1;
+          }
+        }
+
+        &.connectedServerListItem {
+          position: relative;
+
+          &::after {
+            // This is needed so as the cursor goes into the padding
+            // outside of the list item, it doesn't trigger a mouseleave
+            // event and therefore close the server list menu.
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -10px;
+            bottom: 0;
+            width: 11px;
+          }
+        }
+      }
+    }
+  }
+
+  .connManagementContainer {
+    z-index: 1;
+    width: 233px;
+    right: 234px;
+
+    .listBox {
+      padding: $pad;
+
+      .listItem {
+        display: flex;
+      }
+
+      .serverList {
+        .listItem {
+          & > span {
+            padding-left: 15px;
+            position: relative;
+
+            .connectedIcon {
+              position: absolute;
+              top: -5px;
+              left: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .navOverlay {
+    display: none;
+    position: fixed;
+    z-index: 0;
+
+    &.open {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,60 @@
+.moderatorCard {
+  cursor: pointer;
+
+  .moderatorCardInner {
+    padding: $padMd;
+
+    .moderatorCardMiddle {
+      flex-grow: 1;
+      overflow: hidden;
+      font-size: $tx5b;
+
+      .moreLink {
+        float: right;
+      }
+    }
+
+    .selectBtn {
+
+      width: 76px;
+
+      .showIfSelected {
+        display: none;
+      }
+
+      &[data-state='selected'] .showIfSelected {
+        display: inline;
+      }
+
+      .showIfDeselected {
+        display: none;
+      }
+
+      &[data-state='deselected'] .showIfDeselected {
+        display: inline;
+      }
+
+      .showIfUnselected {
+        display: none;
+      }
+
+      &[data-state='unselected'] .showIfUnselected {
+        display: inline;
+      }
+    }
+
+    .btnRadio {
+      padding: 0;
+
+      .fauxRadioBtn {
+        margin: 0;
+      }
+    }
+  }
+
+  .moderatorCardSeperator {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    margin: 0 $padMd;
+  }
+}

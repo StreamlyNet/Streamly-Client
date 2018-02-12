@@ -1,0 +1,105 @@
+<nav id="pageTabBar" class="noTabs barLg clrP clrBr ">
+    <div class="pageTabs js-searchProviders">
+        <div class="searchProviders flexRow gutterH"><div class="thumb discoverLogo flexNoShrink"></div>
+            <div class="providersHeader flexNoShrink">
+              <div class="flexVCent">
+                <div>
+                  <div class="tx4 rowTn white">Streamly</div>
+                  <div class="tx6 white">Discover</div>
+                </div>
+              </div>
+            </div>
+            <div class="providersBar flexExpand">
+            </div>
+            <div>
+              <div class="flexVCent gutterHSm">
+                <a class="btn barBtn flexNoShrink tx6 clrP clrBr clrSh2" href="#transactions/sales">Transactions</a>
+                <a class="btn barBtn flexNoShrink tx6 clrP clrBr clrSh2" href="#<%=ob.peerId%>">My Page</a>
+              </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+  <div class="pageContent">
+    <div class="flexColRows row">
+      <div class="searchBar row clrP clrBr clrSh2">
+        <input class="clrP clrBr searchInput js-searchInput <% if (ob.logo) print('withLogo') %>"
+               type="text"
+               placeholder="<%= ob.polyT('search.searchPlaceholder') %>">
+        <button class="btn button--cian searchBtn js-searchBtn"><%= ob.polyT('search.searchBtn') %></button>
+      </div>
+    </div>
+    <div class="flexRow gutterHLg">
+        <div class="col3 filterWrapper js-filterWrapper">
+            <div class="flexColWide gutterV">
+                <div class="contentBox pad clrP clrBr clrSh2">
+                  <h4 class="row">Reputation range</h4>
+                  <div class="reputation-slider noUi-target noUi-rtl noUi-horizontal row"></div>
+                  <div class="rowLg">
+                      <div>
+                          <span class="slider__value--min">Min</span>
+                          <span class="slider__value--max">Max</span>
+                      </div>
+                      <div>
+                          <input type="text" disabled class="input-with-focus-0-reputation clrBr clrSh2">
+                          <input type="text" disabled class="input-with-focus-1-reputation clrBr clrSh2">
+                      </div>
+                  </div>
+                  <h4 class="row">Price range</h4>
+                  <div class="price-slider noUi-target noUi-rtl noUi-horizontal row"></div>
+                  <div class="rowLg">
+                      <div>
+                          <span class="slider__value--min">Min</span>
+                          <span class="slider__value--max">Max</span>
+                      </div>
+                      <div>
+                          <input type="text" disabled class="input-with-focus-0-price clrBr clrSh2">
+                          <input type="text" disabled class="input-with-focus-1-price clrBr clrSh2">
+                      </div>
+                  </div>
+                  <div>
+                      <button class="btn clrP clrBr floL reset-filters" disabled>Reset</button>
+                      <button class="btn floR button--cian apply-filters" disabled>Apply</button>
+                  </div>
+                </div>
+            </div>
+          <div class="flexColWide gutterV tagcloudBox hide">
+            <div class="contentBox pad clrP clrBr clrSh2">
+                <h4 class="row tagcloudHeading">Tag cloud</h4>
+              <div id="tagcloud">
+             </div>
+            </div>
+          </div>
+        </div>
+      <div class="col9">
+        <div class="flexCol">
+          <div class="width100">
+            <div class="row flexVBase gutterH">
+              <div class="tx5 flexExpand">
+              </div>
+              <div class="tx5b">
+                  Sort by
+              </div>
+              <div>
+                  <select class="tx6 select2Small js-sortBySelect" style="width: 170px">
+                    <option value="0">Reputation high to low</option>
+                    <option value="1">Reputation low to high</option>
+                    <option value="2">Price high to low</option>
+                    <option value="3">Price low to high</option>
+                  </select>
+                  <div class="select2Small js-sortBySelectDropdownContainer"></div>
+                </div>
+            </div>
+          </div>
+          <div class="width100 js-resultsWrapper">
+              <div class="searchResults flexColRow gutterV">
+                  <div class="listingsGrid flex js-resultsGrid">
+
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

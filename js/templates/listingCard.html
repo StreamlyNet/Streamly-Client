@@ -1,0 +1,146 @@
+<% if (ob.viewType === 'grid') { %>
+    <%
+    var isAvailable = '';
+    if(ob.availability === 0){
+        isAvailable = ' notAvailable';
+    }
+     %>
+<div class="gridViewContent posR <%= isAvailable %>">
+  <div class="listingImage" style="background-image: url(<%= ob.getServerUrl(`ob/images/${ob.isHiRez() ? ob.thumbnail.medium : ob.thumbnail.small}`) %>), url('../imgs/defaultItem.png')">
+    <% if (ob.ownListing) { %>
+      <div class="editOverlay overlayPanel pad">
+        <div class="overlayPanelInner"></div>
+        <% if (ob.isFromDiscoveryView) {var hideClass = ' hide'; }%>
+        <div class="flex gutterHSm <%=hideClass%>">
+          <button class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-edit' data-tip="<%= ob.polyT('listingCard.editListingTooltip') %>"><span class="ion-edit"></span></button>
+          <button class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-clone' data-tip="<%= ob.polyT('listingCard.cloneListingTooltip') %>"><span class="ion-ios-copy"></span></button>
+          <div class="posR">
+            <a class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-delete' data-tip="<%= ob.polyT('listingCard.deleteListingTooltip') %>"><span class="ion-trash-b"></span></a>
+            <div class="js-deleteConfirmedBox confirmBox deleteConfirm tx5 arrowBoxBottom clrBr clrP clrT hide">
+              <div class="tx3 txB rowSm"><%= ob.polyT('listingCard.confirmDelete.title') %></div>
+              <p><%= ob.polyT('listingCard.confirmDelete.body') %></p>
+              <hr class="clrBr row" />
+              <div class="flexHRight flexVCent gutterHLg buttonBar">
+                <a class="js-deleteConfirmCancel"><%= ob.polyT('listingCard.confirmDelete.btnCancel') %></a>
+                <a class="btn button--cian js-deleteConfirmed"><%= ob.polyT('listingCard.confirmDelete.btnConfirm') %></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="reportOverlay overlayPanel padSm js-reportBtnWrapper"></div>
+    <% } %>
+  </div>
+  <div class="pad clrBr borderTop posR">
+    <% if (ob.vendor) { %>
+      <a class="userIconWrapper js-userIcon" href="#<%= `${ob.vendor.peerID}/store` %>">
+        <% const dataTip = ob.vendor.name ? `data-tip="${ob.vendor.name}"` : ''; %>
+        <div class="userIcon disc clrBr2 clrSh1 toolTipNoWrap" <%= dataTip %>
+        <% var avatarHash = ob.vendor.avatarHashes ? ob.isHiRez() ? ob.vendor.avatarHashes.small : ob.vendor.avatarHashes.tiny : ''; %>
+        <% if (avatarHash) { %>
+        style="background-image: url(<%= ob.getServerUrl(`ob/images/${avatarHash}`) %>), url('../imgs/defaultAvatar.png')"
+        <% } else { %>
+        style="background-image: url('../imgs/defaultAvatar.png')"
+        <% } %>>
+        </div>
+      </a>
+    <% } %>
+    <div class="rowSm">
+      <% const tooltipClass = ob.title.length > 60 ? 'toolTip' : 'toolTipNoWrap' %>
+      <div class="<%= tooltipClass %> toolTipTop inlineBlock <% if(ob.vendor) print('trimWidth') %>" data-tip="<%= ob.title %>">
+        <a class="clrT clamp text-ellipsis"><%= ob.title %></a>
+      </div>
+    </div>
+     <% if(ob.isFromDiscoveryView){%>
+    <div class="flex">
+      <div class="flexExpand tx5b">
+        Reputation:
+      </div>
+      <div class="txB">
+        <%= ob.reputation %>
+      </div>
+    </div>
+    <% } %>
+    <div class="flex">
+      <div class="flexExpand tx5b">
+          <% if(ob.isFromDiscoveryView){%>
+              Price/minute:
+          <% }else{ %>
+            <%  print(`${ob.formatRating(ob.averageRating, ob.ratingCount)}`)%>
+          <% } %>
+      </div>
+      <div class="txB">
+        <% if(ob.price.amount == 0) {%>
+          FREE
+        <%}else{ %>
+        <%= ob.convertAndFormatCurrency(ob.price.amount, ob.price.currencyCode, ob.displayCurrency) %>
+        <%} %>
+      </div>
+    </div>
+  </div>
+  <div class="listingIcons">
+    <% if (ob.shipsFreeToMe) { %>
+    <span class="clrE1 clrTOnEmph phraseBox"><%= ob.polyT('listingCard.freeShippingBanner') %></span>
+    <% } %>
+  </div>
+</div>
+<% } else { %>
+  <div class="listViewContent">
+    <div class="flexVCent gutterHSm">
+    <% // Since we have inconsistent padding/gutters, we'll inline some padding settings. %>
+      <div class="flexNoShrink">
+        <div class="listingImage posR" style="background-image: url(<%= ob.getServerUrl(`ob/images/${ob.isHiRez() ? ob.thumbnail.small : ob.thumbnail.tiny}`) %>), url('../imgs/defaultItem.png')"></div>
+      </div>
+      <div class="flexExpand">
+        <div class="rowTn">
+          <a class="clrT clamp3"><%= ob.title %></a>
+        </div>
+        <div class="tx5b">
+          <% print(`${ob.formatRating(ob.averageRating, ob.ratingCount)}`) %>
+        </div>
+      </div>
+      <% if (ob.shipsFreeToMe) { %>
+      <div class="freeShipCol flexNoShrink txCtr">
+        <span class="clrE1 clrTOnEmph phraseBox"><%= ob.polyT('listingCard.freeShippingBanner') %></span>
+      </div>
+      <% } %>
+      <div class="priceCol flexNoShrink">
+        <span class="txB"><%= ob.convertAndFormatCurrency(ob.price.amount, ob.price.currencyCode, ob.displayCurrency) %></span>
+      </div>
+      <div class="flexNoShrink">
+        <a class='btn clrP clrBr'><%= ob.polyT('listingCard.btnDetails') %></a>
+      </div>
+    </div>
+  </div>
+
+  <% if (ob.ownListing) { %>
+    <div class="editOverlay overlayPanel pad">
+      <div class="overlayPanelInner"></div>
+      <div class="flexHCent gutterHSm">
+        <button class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-edit' data-tip="<%= ob.polyT('listingCard.editListingTooltip') %>"><span class="ion-edit"></span></button>
+        <button class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-clone' data-tip="<%= ob.polyT('listingCard.cloneListingTooltip') %>"><span class="ion-ios-copy"></span></button>
+        <div class="posR">
+          <button class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-delete' data-tip="<%= ob.polyT('listingCard.deleteListingTooltip') %>"><span class="ion-trash-b"></span></button>
+          <div class="js-deleteConfirmedBox confirmBox deleteConfirm tx5 arrowBoxBottom clrBr clrP clrT hide">
+            <div class="tx3 txB rowSm"><%= ob.polyT('listingCard.confirmDelete.title') %></div>
+            <p><%= ob.polyT('listingCard.confirmDelete.body') %></p>
+            <hr class="clrBr row" />
+            <div class="flexHRight flexVCent gutterHLg buttonBar">
+              <a class="js-deleteConfirmCancel"><%= ob.polyT('listingCard.confirmDelete.btnCancel') %></a>
+              <a class="btn button--cian js-deleteConfirmed"><%= ob.polyT('listingCard.confirmDelete.btnConfirm') %></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+<% } %>
+<div class="deleteOverlay overlayPanel">
+  <div class="overlayPanelInner clrS"></div>
+  <div class="deletingText clrT tx5"><%= ob.polyT('listingCard.deleting') %></div>
+  <div class="deletedText clrT tx5">
+    <div class="ion-trash-b tx3"></div>
+    <%= ob.polyT('listingCard.deleted') %>
+  </div>
+</div>

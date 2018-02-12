@@ -1,0 +1,420 @@
+.ctrl {
+  height: $buttonHeight;
+  padding: 0 24px;
+  border-radius: $corner;
+  border-width: 1px;
+  border-style: solid;
+  font-size: $tx5;
+  font-weight: 400;
+  box-sizing: border-box;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center; // centers icons if they are a child element
+  justify-content: center;
+  -webkit-user-select: none; // quick clicks will now not highlight
+}
+
+.btn {
+  @extend .ctrl;
+  cursor: pointer;
+  font-weight: 700;
+  transition: border 0.15s ease;
+  text-align: center;
+
+  &:hover:not(.btnRadio, .btnAsLink),
+  &:focus:not(.btnRadio, .btnAsLink) {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  &:focus:not(.btnRadio) {
+    outline: 0;
+  }
+
+  &.form {
+    // use when buttons are inline with form elements and should match their size
+    height: $inputHeight +2;
+  }
+
+  .bar &:not(.barBtn) { //add barBtn to any btn that should keep standard button styling
+    &:not(.normalBtn) {
+      line-height: $bar;
+      height: $bar;
+      border: none;
+    }
+  }
+
+  .barSm &:not(.barBtn) {
+    line-height: $barSm;
+    height: $barSm;
+    border: none;
+  }
+
+  .barLg &:not(.barBtn) {
+    line-height: $barLg;
+    height: $barLg;
+    border: none;
+  }
+
+  &.btnProcessing {
+    position: relative;
+
+    .spinner {
+      display: none;
+    }
+
+    &.processing {
+      pointer-events: none;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: inherit;
+        z-index: 1;
+      }
+
+      .spinner {
+        position: absolute;
+        display: block;
+        top: 50%;
+        left: 50%;
+        right: 0;
+        bottom: 0;
+        background-color: inherit;
+        transform: translate(-50%, -50%);
+        border-radius: inherit;
+        width: 25px;
+        height: 25px;
+        z-index: 1;
+      }
+    }
+  }
+
+  &.confirmDisabled {
+    border-width: 0;
+    @include disabled;
+  }
+
+  .icon {
+    // use this for icons that are inline in a button in front of text
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: 0.5em;
+    display: inline-flex;
+    align-content: center;
+  }
+}
+
+.btnRadio {
+  @extend .btn;
+  text-align: left;
+  border: 0;
+  padding: 0;
+  font-weight: normal;
+  height: auto;
+  display: inline;
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  $radioBtnMargin: 0.4em;
+
+  input[type="radio"] + label,
+  .fauxRadioBtn {
+    padding-right: $radioBtnMargin; // match margin on radio button
+  }
+
+  input[type="radio"] + label:hover,
+  .fauxRadioBtn {
+    cursor: inherit;
+  }
+
+  input[type="radio"] + label:before,
+  .fauxRadioBtn {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    margin-right: $radioBtnMargin;
+    //background color is assigned by the theme
+
+    &:hover {
+      cursor: inherit;
+    }
+
+    //checked state is set by the theme
+  }
+
+  .fauxRadioBtn:focus {
+    outline: none;
+  }
+
+  input[type="checkbox"] {
+    // todo: style this to match the designs
+  }
+}
+
+.btnTxt {
+  @extend .btn;
+  text-align: left;
+  border: none;
+  background: none;
+}
+
+.btnTxtOnly {
+  @extend .btnTxt;
+  height: auto;
+  display: inline;
+  font-size: inherit;
+  vertical-align: inherit;
+  align-items: inherit;
+  justify-content: inherit;
+  padding: 0;
+}
+
+.btnAsLink {
+  @extend .btnTxtOnly;
+  font-weight: inherit;
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.iconBtn {
+  //this button has only an icon in it
+  @extend .btn;
+  font-size: 1.8rem;
+  padding: 0 12px;
+  width: $buttonHeight;
+
+  &.form {
+    width: $inputHeight;
+  }
+}
+
+.iconBtnSm {
+  //this button has only an icon in it and it's smaller than iconBtn
+  @extend .btn;
+  font-size: $tx5;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+}
+
+.iconBtnTn {
+  //this button has only an icon in it and it's very small
+  @extend .btn;
+  font-size: $tx5;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+}
+
+.btnThin {
+  padding: 0 12px;
+}
+
+.btnHg {
+  @extend .btn;
+  font-size: $tx2b;
+  height: 56px;
+}
+
+.btnStrip {
+  //creates a set of buttons with no gaps between them
+  overflow: hidden; // clear the floats to avoid layout issues.
+
+  & > .btn {
+    border-radius: 0;
+    float: left; //float left will collapse the button and position it correctly
+  }
+  & > .btn:not(:last-child):not(:hover) {   // on hover use the normal border width
+    border-right-color: transparent;
+  }
+  & > .btn:first-child {
+    border-top-left-radius: $corner;
+    border-bottom-left-radius: $corner;
+  }
+  & > .btn:last-child {
+    border-top-right-radius: $corner;
+    border-bottom-right-radius: $corner;
+  }
+}
+
+.btnStrip .btnRadio {
+  margin-right: 7px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.button--cian{
+    color: #363838;
+    background-color: #25b4b0;
+    border: none;
+    &:hover{
+        color: #363838;
+        background-color: rgba(37, 180, 176, .9);//#25b4b0 in decimal
+        border: none;
+    }
+    &:active{
+        color: #363838;
+        background-color: rgba(37, 180, 176, .8);
+        border: none;
+    }
+    &[disabled]{
+        opacity: 0.7;
+        &:hover,&:active{
+            background-color: #25b4b0;
+            border: none;
+        }
+    }
+}
+
+.button--green{
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    &:hover{
+        color: #fff;
+        background-color: #449d44;
+        border-color: #398439;
+    }
+    &:active{
+        color: #fff;
+        background-color: #398439;
+        border-color: #255625;
+    }
+    &[disabled]{
+        opacity: 0.7;
+        &:hover,&:active{
+            background-color: #5cb85c;
+            border-color: none;
+        }
+    }
+}
+
+*[class *= "ion-"]:before {
+  pointer-events: none; // don't fire clicks on icons
+  line-height: 1em;
+}
+
+.foldDown {
+  //a hidden element that folds down when a parent or sibling is interacted with
+  //this element will need a width applied in most cases
+  position: absolute;
+  top: 100%;
+  right: 0;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  transition: 0.2s ease;
+  overflow: hidden;
+
+  &.open {
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+.flipBtn {
+  // use for a button that should slow new text when active
+  // the flippable elements are positioned on top of each other.
+  position: relative;
+
+  .unFlipped,
+  .flipped {
+    transition: opacity 1s;
+  }
+
+  .unFlipped {
+    opacity: 1;
+    position: absolute;
+  }
+
+  .flipped {
+    opacity: 0;
+  }
+
+  &.active {
+    .unFlipped {
+      opacity: 0;
+    }
+
+    .flipped {
+      opacity: 1;
+    }
+  }
+}
+
+.searchWrapper {
+  //div around a search input
+  position: relative;
+  width: 100%;
+
+  input[type=text] {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+.cornerTR {
+  //positions an element in the top right. It should usually be an icon button.
+  position: absolute;
+  z-index: 1; // don't unintentionally cover with other absolute elements
+  top: 10px;
+  right: $pad;
+  font-size: $tx1;
+  cursor: pointer;
+}
+
+// range slider
+
+input[type=range]{
+  -webkit-appearance: none;
+  height: 22px;
+  width: 100%;
+
+  &:disabled {
+    @include disabled;
+  }
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 4px;
+  background: #ccc; //default, use color classes
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 22px;
+  width: 22px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 50%;
+  margin-top: -9px;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+.cianButton{
+    background-color: #25b4b0;
+    color: #363838;
+}

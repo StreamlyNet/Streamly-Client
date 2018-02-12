@@ -1,0 +1,46 @@
+#doorbell-button {
+  right: $scrollbar + $pad;
+  @include chatOpeningTransition(right);
+
+  .chatOpen & {
+    right: $scrollbar + $pad + $chatOpen;
+  }
+}
+
+#ov1 #doorbell #doorbell-container {
+  #doorbell-form {
+    border-radius: $corner;
+    border-color: $border;
+    border-width: 2px;
+    border-style: solid;
+
+    legend {
+      padding-bottom: $padSm;
+    }
+
+    #intro-text,
+    textarea,
+    #doorbell-attach-screenshot-wrapper {
+      margin-bottom: $pad;
+    }
+
+    .buttons .btn {
+      background-color: $secondary;
+      border-color: $border;
+      color: $text;
+    }
+
+    label {
+      line-height: normal;
+      margin-bottom: $padSm;
+    }
+
+    input[type="checkbox"] {
+      display: inline;
+    }
+
+    #doorbell-powered-by {
+      color: $text;
+    }
+  }
+}

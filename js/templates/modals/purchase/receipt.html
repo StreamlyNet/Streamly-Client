@@ -1,0 +1,77 @@
+<hr class="clrBr">
+<b><%= ob.polyT('purchase.receipt.summary') %></b>
+<%
+  const listingCurrency = ob.listing.metadata.pricingCurrency;
+  const viewingCurrency = ob.displayCurrency;
+  const isBTC = viewingCurrency === 'BTC';
+  ob.prices.forEach((priceObj, i) => {
+    // convert and truncate the prices here, to prevent rounding errors in the display
+    const basePrice = Number(ob.formatPrice(ob.convertCurrency(priceObj.price, listingCurrency, viewingCurrency), isBTC));
+    const shippingPrice = Number(ob.formatPrice(ob.convertCurrency(priceObj.sPrice, listingCurrency, viewingCurrency), isBTC));
+    const surcharge = Number(ob.formatPrice(ob.convertCurrency(priceObj.vPrice, listingCurrency, viewingCurrency), isBTC));
+    const quantity = Number.isInteger(priceObj.quantity) ? priceObj.quantity : 1;
+    let itemTotal = basePrice + surcharge;
+    const preCouponPrice = itemTotal;
+    ob.coupons.forEach((coupon) => {
+      if (coupon.percentDiscount) {
+        itemTotal -= itemTotal * 0.01 * coupon.percentDiscount;
+      } else if (coupon.priceDiscount) {
+        itemTotal -= Number(ob.formatPrice(ob.convertCurrency(coupon.priceDiscount, listingCurrency, viewingCurrency), isBTC));
+      }
+    });
+    itemTotal = itemTotal + shippingPrice;
+    const total = itemTotal * quantity;
+%>
+  <div class="flexRow">
+    <span class="flexExpand">
+      <%= ob.polyT('purchase.receipt.listing') %>
+    </span>
+    <b class="flexNoShrink">
+      <%= ob.formatCurrency(preCouponPrice, viewingCurrency) %>
+    </b>
+  </div>
+  <% ob.coupons.forEach((coupon) => { %>
+    <div class="flexRow">
+      <span class="flexExpand">
+        <%= ob.polyT('purchase.receipt.coupon') %>
+      </span>
+      <b class="flexNoShrink">
+        <% if (coupon.percentDiscount) {
+             print(`-${coupon.percentDiscount}%`);
+        } else if (coupon.priceDiscount) {
+          print(`-${ob.convertAndFormatCurrency(Number(coupon.priceDiscount), listingCurrency, viewingCurrency)}`);
+        } %>
+      </b>
+    </div>
+  <% }); %>
+
+  <% if (ob.listing.shippingOptions && ob.listing.shippingOptions.length) { %>
+    <div class="flexRow">
+      <span class="flexExpand">
+        <%= ob.polyT('purchase.receipt.shipping') %>
+      </span>
+      <b class="flexNoShrink">
+        <%= ob.formatCurrency(shippingPrice, viewingCurrency) %>
+      </b>
+    </div>
+  <% } %>
+  <hr class="clrBr">
+  <% if (quantity > 1) { %>
+    <div class="flexRow">
+      <span class="flexExpand">
+        <%= ob.polyT('purchase.receipt.subtotal') %>
+      </span>
+      <b class="flexNoShrink">
+        <%= ob.formatCurrency(itemTotal, viewingCurrency) %>
+      </b>
+    </div>
+  <% } %>
+  <div class="flexRow">
+    <span class="flexExpand">
+      <%= ob.polyT('purchase.receipt.total', { quantity }) %>
+    </span>
+    <b class="flexNoShrink">
+      <%= ob.formatCurrency(total, viewingCurrency) %>
+    </b>
+  </div>
+<% }); %>

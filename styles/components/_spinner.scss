@@ -1,0 +1,31 @@
+.spinner {
+  &.spinnerLg {
+    width: $spinnerLg;
+    height: $spinnerLg;
+  }
+
+  &.spinnerMd {
+    width: $spinnerMd;
+    height: $spinnerMd;
+  }
+
+  &.spinnerSm {
+    width: $spinnerSm;
+    height: $spinnerSm;
+  }
+
+  &.spinnerTxt {
+    width: 1em;
+    height: 1em;
+  }
+}
+
+#ajaxLoader{
+    margin: 100px auto 100px auto;
+    display: block;
+    height: 60px;
+    width: 100%;
+    &.standard-margin{
+        margin: 20px auto 20px auto;
+    }
+}

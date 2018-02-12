@@ -1,0 +1,199 @@
+.flexboxCenter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.localVideo--props{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+}
+@keyframes dotty {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
+}
+.videoConnection.modal.modalScrollPage{
+    .modalContent{
+        width: 642px;
+        margin-left: calc(((100% - (#{$videoModalWidth + $chatClosed})) / 2) + 20px);
+        #localVideoContainer{
+            transition: $defaultTransition;
+            opacity: 0;
+            min-height: 100px;
+            @extend .localVideo--props;
+            #localVideo{
+                opacity: 0;
+                width: 150px;
+                @extend .localVideo--props;
+            }
+            &.display{
+                opacity: 1;
+                #localVideo{
+                    opacity: 1;
+                }
+            }
+        }
+        #remoteContainer{
+            min-width: 640px;
+            min-height: 480px;
+            .callingScreen{
+                background-color: #4d5c6c;
+                height: 480px;
+                text-align: center;
+                .callingScreen__image{
+                    width: 200px;
+                    height: 200px;
+                    border-radius: 100px;
+                    border: 1px solid white;
+                    margin: 0 auto;
+                    display: inline-block;
+                    background-position: center;
+                    background-size: cover;
+                }
+                .callingScreen__name{
+                    color: white;
+                    padding: 95px 0 35px 0;//35px originates from:(480 - 60 - 205 - 25 - 85)/3 = 35px 95px originates from: 95-60 = 35(60px is the top control panel height)
+                    font-size: 16px;
+                }
+            }
+            video{
+                width: 640px;
+                height: 480px;
+                background-color: #4d5c6c;
+            }
+        }
+        #remoteContainer video, #localVideo, .btnContainer{
+            border-radius: 2px;
+        }
+        .videoContainer__spinner{
+            @extend .flexboxCenter;
+            height: 100%;
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            transition: $defaultTransition;
+            opacity: 0;
+            width: calc(100% - 38px);
+            &.display{
+                opacity: 1;
+                z-index: 11;
+            }
+        }
+        .videoContainer__body{
+            min-width: 640px;
+            transition: $defaultTransition;
+            opacity: 0;
+            &.display{
+                opacity: 1;
+            }
+        }
+        .contentBox{
+            position: relative;
+            height: 482px;
+            & > .flex.gutterHLg{
+                min-width: 640px;
+            }
+        }
+        & > .cornerTR{
+            left: calc(#{$videoModalWidth} - #{$buttonHeight});
+        }
+        .videoContainer{
+            position: relative;
+            height: 480px
+        }
+        .btnContainer{
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            bottom: 0;
+            transition: $defaultTransition;
+            opacity: 0;
+            &.display{
+                opacity: 1;
+            }
+            .btnContainer__overlay{
+                background-color: #000;
+                opacity: .3;
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                bottom: 0;
+                z-index: 0;
+            }
+            & > .btn{
+                font-size: 18px;
+                width: 45px;
+                height: 45px;
+                padding: 0;
+                position: relative;
+                margin: 0 3px;
+                border-radius: 25px;
+            }
+
+            & > .btn.red.btn-default{
+                color: #fff;
+                background-color: #d9534f;
+                border-color: #d43f3a;
+                &:hover{
+                    color: #fff;
+                    background-color: #c9302c;
+                    border-color: #ac2925;
+                }
+            }
+            & > .btn-default{
+                &:not([disabled]):hover{
+                    color: #333;
+                    background-color: #e6e6e6;
+                    border-color: #adadad;
+                }
+                &:not(.red):not([disabled]):active,&.paused,&.muted{
+                    color: #333;
+                    background-color: #d4d4d4;
+                    border-color: #8c8c8c;
+                }
+            }
+            .fa-phone.end-call{
+                transform: rotate(135deg);
+            }
+            &.top{
+                top: 0;
+                bottom: initial;
+                @extend .flexboxCenter;
+                justify-content: initial;
+                font-size: 16px;
+                color: white;
+                .durationDisplay__text, .nickname, .centPerMinute__container{
+                    position: relative;
+                    z-index: 10;
+                    width: 33.3%;
+                }
+                .nickname{
+                    padding-left: 20px;
+                    &:hover{
+                        cursor: pointer;
+                    }
+                }
+                .callingString{
+                    width: 100%;
+                    position: relative;
+                    z-index: 10;
+                    text-align: center;
+                }
+                .callingString:after {
+                  display: inline-block;
+                  animation: dotty steps(1,end) 2s infinite;
+                  content: '';
+                  position: absolute;
+                }
+            }
+            .js-fullScreen[disabled]{
+                opacity: .2;
+            }
+        }
+    }
+}

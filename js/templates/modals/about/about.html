@@ -1,0 +1,34 @@
+<div class="topControls flexRow js-btcTicker"></div>
+<div class="flex gutterH">
+  <div class="tabColumn contentBox padMd clrP clrBr clrSh3">
+    <h1 class="h3 txUp clrT2"><%= ob.polyT('tabMenuHeading') %></h1>
+    <div class="boxList tx4 clrTx1Br">
+      <a class="js-tab tab row" data-tab="License"><%= ob.polyT('about.licenseTab.linkText') %></a>
+    </div>
+  </div>
+  <div class="flexExpand posR">
+    <div class="js-tabContent tabContent">
+      <div class="contentBox padMd clrP clrBr clrSh3">
+        <div class="flexVCent">
+          <div class="floL"><%= ob.brandingBoxT() %></div>
+          <h2 id=tabTitle class="h3 clrT txCtr flexExpand"></h2>
+          <div>
+            <div class="tx6 txRgt rowSm">
+              <% if (ob.version === ob.serverVersion) { %>
+                <%= ob.polyT('about.version', { version: ob.version }) %>
+              <% } else { %>
+                <%= ob.polyT('about.bothVersions', { cVer: ob.version, sVer: ob.serverVersion }) %>
+              <% } %>
+            </div>
+            <% if (ob.isBundledApp) { %>
+              <% if (ob.updatesSupported) { %>
+              <% } else { %>
+              <% } %>
+            <% } %>
+          </div>
+        </div>
+        <hr class="clrBr" />
+      </div>
+    </div>
+  </div>
+</div>

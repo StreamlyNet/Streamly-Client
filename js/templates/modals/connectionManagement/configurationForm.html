@@ -1,0 +1,156 @@
+<div class="contentBox padMd clrP clrBr clrSh3">
+  <div class="flexVCent" style="height: 35px">
+    <div class="col4">
+      <!-- OB branding comming soon... -->
+    </div>
+    <div class="col4">
+      <h2 class="h3 clrT txUnl txCtr"><%= ob.title %></h2>
+    </div>
+    <div class="col4"></div>
+  </div>
+  <hr class="clrBr <% if (!ob.default) print('rowLg') %>" />
+
+  <% if (ob.showConfigureTorMessage) { %>
+  <div class="border clrBr3 padMd flex torMessage">
+    <%= ob.polyT('connectionManagement.configurationForm.configureTorMessage') %>
+  </div>
+  <% } %>
+
+  <% if (ob.showTorUnavailableMessage) { %>
+  <div class="border clrBrError clrTErr padMd flex torMessage">
+    <%= ob.polyT('connectionManagement.configurationForm.torNotAvailableMessage') %>
+  </div>
+  <% } %>
+
+  <form class="padMdKids padStack">
+  <% if (!ob.default) { %>
+    <div class="flexRow">
+      <div class="col3">
+        <label for="serverConfigName" class="required"><%= ob.polyT('connectionManagement.configurationForm.name') %></label>
+      </div>
+      <div class="col9">
+      <% if (ob.errors.name) print(ob.formErrorTmpl({ errors: ob.errors.name })) %>
+        <input type="text" class="clrBr clrSh2 js-inputName" name="name" id="serverConfigName" value="<%= ob.name %>" placeholder="<%= ob.polyT('connectionManagement.configurationForm.placeholderName') %>" >
+      </div>
+    </div>
+    <div class="flexRow">
+      <div class="col3">
+        <label for="serverConfigServerIp" class="required"><%= ob.polyT('connectionManagement.configurationForm.serverIp') %></label>
+      </div>
+      <div class="col9">
+      <% if (ob.errors.serverIp) print(ob.formErrorTmpl({ errors: ob.errors.serverIp })) %>
+        <input type="text" class="clrBr clrSh2" name="serverIp" id="serverConfigServerIp" value="<%= ob.serverIp %>"placeholder="<%= ob.polyT('connectionManagement.configurationForm.placeholderServerIp') %>">
+      </div>
+    </div>
+    <div class="flexRow">
+      <div class="col3">
+        <label for="serverConfigUsername" class="<% if (ob.isRemote) print('required') %> js-usernameLabel"><%= ob.polyT('connectionManagement.configurationForm.username') %></label>
+      </div>
+      <div class="col9">
+      <% if (ob.errors.username) print(ob.formErrorTmpl({ errors: ob.errors.username })) %>
+        <input type="text" class="clrBr clrSh2" name="username" id="serverConfigUsername" value="<%= ob.username %>" placeholder="<%= ob.polyT('connectionManagement.configurationForm.placeholderUsername') %>">
+      </div>
+    </div>
+    <div class="flexRow">
+      <div class="col3">
+        <label for="serverConfigPassword" class="<% if (ob.isRemote) print('required') %> js-passwordLabel"><%= ob.polyT('connectionManagement.configurationForm.password') %></label>
+      </div>
+      <div class="col9">
+      <% if (ob.errors.password) print(ob.formErrorTmpl({ errors: ob.errors.password })) %>
+        <input type="password" class="clrBr clrSh2" name="password" id="serverConfigPassword" value="<%= ob.password %>" placeholder="<%= ob.polyT('connectionManagement.configurationForm.placeholderPassword') %>">
+      </div>
+    </div>
+    <div class="flexRow">
+      <div class="col3">
+        <label>SSL</label>
+      </div>
+      <div class="col9">
+        <% if (ob.errors.ssl) print(ob.formErrorTmpl({ errors: ob.errors.ssl })) %>
+        <div class="btnStrip">
+          <div class="btnRadio clrBr">
+            <input type="radio"
+                   name="SSL"
+                   value="true"
+                   id="serverConfigSSLOn"
+                   data-var-type="boolean"
+            <% if(ob.SSL) { %>checked<% } %>>
+            <label for="serverConfigSSLOn"><%= ob.polyT('connectionManagement.configurationForm.sslOn') %></label>
+          </div>
+          <div class="btnRadio clrBr">
+            <input type="radio"
+                   name="SSL"
+                   value="false"
+                   id="serverConfigSSLOff"
+                   data-var-type="boolean"
+            <% if(!ob.SSL) { %>checked<% } %>>
+            <label for="serverConfigSSLOff"><%= ob.polyT('connectionManagement.configurationForm.sslOff') %></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flexRow">
+      <div class="col3">
+        <label for="serverConfigPort" class="required"><%= ob.polyT('connectionManagement.configurationForm.port') %></label>
+      </div>
+      <div class="col9">
+      <% if (ob.errors.port) print(ob.formErrorTmpl({ errors: ob.errors.port })) %>
+        <input type="text" class="clrBr clrSh2" name="port" id="serverConfigPort" value="<%= ob.port %>" data-var-type="number" placeholder="<%= ob.polyT('connectionManagement.configurationForm.placeholderPort') %>">
+      </div>
+    </div>
+    <% } %>
+    <div class="flexRow">
+      <div class="col3">
+        <label><%= ob.polyT('connectionManagement.configurationForm.torLabel') %></label>
+      </div>
+      <div class="col9">
+        <% if (ob.errors.useTor) print(ob.formErrorTmpl({ errors: ob.errors.useTor })) %>
+        <input type="checkbox" id="serverConfigUseTor" name="useTor" <% if (ob.useTor) print('checked') %> />
+        <label for="serverConfigUseTor"><%= ob.polyT('connectionManagement.configurationForm.useTor') %></label>
+      </div>
+    </div>
+    <div class="js-torDetails torDetails padMdKids padStack <% if (!ob.useTor) print('hide') %>">
+      <% if (!ob.default) { %>
+      <div>
+        <%= ob.polyT('connectionManagement.configurationForm.torServerWarning', {
+          warning: `<span class="txB">${ob.polyT('connectionManagement.configurationForm.warning')}</span>`,
+        }) %>
+      </div>
+      <% } %>
+      <div class="flexRow">
+        <div class="col3">
+          <label class="required"><%= ob.polyT('connectionManagement.configurationForm.torProxyLabel') %></label>
+        </div>
+        <div class="col9">
+          <% if (ob.errors.torProxy) print(ob.formErrorTmpl({ errors: ob.errors.torProxy })) %>
+          <input type="text" class="clrBr clrSh2 required" name="torProxy" id="serverConfigTorProxy" value="<%= ob.torProxy %>" placeholder="<%= ob.polyT('connectionManagement.configurationForm.torProxyPlaceholder') %>">
+        </div>
+      </div>
+      <div class="flexRow">
+        <div class="col3">
+          <label class="js-torPwLabel <% if (ob.isTorPwRequired) print('required') %>"><%= ob.polyT('connectionManagement.configurationForm.torPwLabel') %></label>
+        </div>
+        <div class="col9">
+          <% if (ob.errors.torPassword) print(ob.formErrorTmpl({ errors: ob.errors.torPassword })) %>
+          <input type="password" class="clrBr clrSh2" name="torPassword" id="serverConfigTorPw" value="<%= ob.torPassword %>" placeholder="<%= ob.polyT('connectionManagement.configurationForm.torPwPlaceholder') %>">
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <hr class="clrBr" />
+  <div class="flexHRight flexVCent gutterHLg">
+    <a class="js-cancel"><%= ob.polyT('connectionManagement.configurationForm.btnCancel') %></a>
+    <div class="posR">
+      <a class="btn clrSh2 button--cian js-save"><%= ob.polyT('connectionManagement.configurationForm.btnSave') %></a>
+      <div class="js-saveConfirmBox confirmBox saveConfirmBox arrowBoxBottom tx5 clrBr clrP clrT hide">
+        <div class="tx3 txB rowSm"><%= ob.polyT('connectionManagement.configurationForm.saveConfirm.title') %></div>
+        <p><%= ob.polyT('connectionManagement.configurationForm.saveConfirm.body') %></p>
+        <hr class="clrBr row" />
+        <div class="flexHRight flexVCent gutterHLg buttonBar">
+          <a class="js-saveConfirmCancel"><%= ob.polyT('connectionManagement.configurationForm.saveConfirm.btnCancel') %></a>
+          <a class="btn clrBAttGrad clrBrDec1 clrTOnEmph js-saveConfirmed"><%= ob.polyT('connectionManagement.configurationForm.saveConfirm.btnConfirm') %></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

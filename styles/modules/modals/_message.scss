@@ -1,0 +1,34 @@
+// The messageModal class is shared by both the SimpleMessageModal and the Dialog and
+// is therefore the place to declare styling common to both of them.
+// TODO: if we find they end up sharing very little in common, we can break them
+// out into seperate files.
+.messageModal {
+  .modalContent {
+    width: 600px;
+  }
+
+  .msgWrap {
+    font-size: 1.4rem;
+  }
+
+  &.dialog {
+    // specific to dialog styling
+
+    .dialogScrollMsg {
+      .innerMessage {
+        max-height: 425px;
+        overflow: auto;
+        margin-right: -15px;
+      }
+    }
+
+    .buttonWrap {
+      text-align: center;
+    }
+  }
+
+  &.simpleMessage {
+   // specific to simple message modal
+  }
+}
+

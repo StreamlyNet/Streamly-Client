@@ -1,0 +1,389 @@
+.box {
+  display: block;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.boxProcessing {
+  position: relative;
+
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    background-color: inherit;
+    transform: translate(-50%, -50%);
+    border-radius: inherit;
+    width: 30%;
+    height: 30%;
+    z-index: 1;
+    display: none;
+  }
+
+  &.processing {
+    pointer-events: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: inherit;
+      z-index: 1;
+    }
+
+    .spinner {
+      display: block;
+    }
+
+    .hideOnProcessing {
+      // use to hide child elements that should not be visible while processing
+      display: none;
+    }
+  }
+}
+
+.boxProcessingFaded {
+  @extend .boxProcessing;
+
+  &.processing {
+
+    &::before {
+      opacity: 0.8;
+    }
+  }
+}
+
+.confirmBox {
+  // - should be in relatively positioned container
+  // - override with your own positioning values (top, right, etc...)
+  display: block;
+  position: absolute;
+  width: 245px;
+  z-index: 1;
+  padding: $pad;
+  border-style: solid;
+  border-width: 1px;
+  text-align: center;
+}
+
+.boxList > * {
+  //convenience class that turns all the direct descendants into blocks. Useful for lists of anchors or spans.
+  @extend .box;
+}
+
+.scrollBox {
+  @extend .box;
+  //a height must be set on this element
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.scrollBoxX {
+  @extend .box;
+  overflow-x: auto;
+  overflow-y: hidden;
+ }
+
+.bar {
+  @extend .box;
+  height: $bar;
+  padding: 0 $pad;
+
+  input[type="text"] {
+    height: 100%;
+  }
+}
+
+.barSm {
+  @extend .bar;
+  height: $barSm;
+}
+
+.barLg {
+  @extend .bar;
+  height: $barLg;
+}
+
+.disc {
+  //the disc can contain an image or an icon, and is usually a clickable element
+  @extend .box;
+  border-radius:50%;
+  width: $thumb;
+  height: $thumb;
+  //fill the disc with any background image
+  background-position: center;
+  background-size: cover;
+  // align the content
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // size the icon if one is present
+  i {
+    font-size: calc(#{$thumb} * 0.6)
+  }
+}
+
+.discSm {
+  @extend .disc;
+  width: $thumbSm;
+  height: $thumbSm;
+}
+
+.discTn {
+  @extend .disc;
+  width: $thumbTn;
+  height: $thumbTn;
+}
+
+.discLg {
+  @extend .disc;
+  width: $thumbLg;
+  height: $thumbLg,
+}
+
+.userIcon {
+  border-width: 2px;
+  border-style: solid;
+  width: $thumb;
+  height: $thumb;
+}
+
+.thumb {
+  // thumbnail image, used for small images
+  @extend .box;
+  width: $thumb;
+  height: $thumb;
+  background-position: center;
+  background-size: cover;
+}
+
+.thumbLg {
+  @extend .thumb;
+  width: $thumbLg;
+  height: $thumbLg;
+}
+
+.border {
+  //use on wrapping containers that should have a border. The element should also have a clrBr class.
+  border-width: 1px;
+  border-style: solid;
+}
+
+.borderBottom {
+  //use to separate stacked containers. The element should also have the clrBr class.
+  border-bottom: {
+    width: 1px;
+    style: solid;
+    color: inherit;
+  }
+}
+
+.borderTop {
+  border-top: {
+    width: 1px;
+    style: solid;
+    color: inherit;
+  }
+}
+
+.borderStacked {
+  & > * {
+    //use on parent element to separate stacked child containers. The element should also have the clrBr class.
+    @extend .borderBottom;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &:empty {
+    display: none;
+  }
+}
+
+.contentBox {
+  //used to contain content, usually main sections of the page
+  @extend .box;
+  border-radius: $corner;
+  border-width: 1px;
+  border-style: solid;
+  font-size: $tx4;
+  word-wrap: break-word;
+}
+
+.phraseBox {
+  // use for a word or phrase in a box for emphasis, like free shipping
+  @extend .box;
+  padding: 3px;
+  font-size: $tx7; // override with class on a span inside the container if needed
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 1px;
+}
+
+.listBox {
+  //a vertical list of children in a box. Usually used for navigation, or to show a list of clickable elements
+  @extend .contentBox, .boxList;
+
+  .listGroup {
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-style: solid;
+    margin-bottom: $pad / 2;
+
+    &:last-child {
+      margin-bottom: 0;
+      border-bottom-width: 0;
+    }
+
+    .listItem {
+      padding: 9px 5px;
+    }
+  }
+
+  .listItem {
+    padding: 9px 0;
+    font-size: 1.4rem;
+    width: 100%;
+    box-sizing: border-box;
+    //margin-bottom: $padSm;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// a box with a triangular arrow on some side of it
+.arrowBox {
+  position: relative;
+  border-radius: $corner;
+
+  &.confirmBox {
+    position: absolute;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: inherit;
+    width: 25px;
+    height: 25px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: inherit;
+  }
+}
+
+.arrowBoxTop {
+  @extend .arrowBox;
+
+  &::before {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-135deg);
+    -webkit-clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  }
+}
+
+.arrowBoxBottom {
+  @extend .arrowBox;
+
+  &::before {
+    bottom: 1px;
+    left: 50%;
+    transform: translate(calc(-25% - 6px), 50%) rotate(-135deg);
+    -webkit-clip-path: polygon(0 0, 0 100%, 100% 0);
+  }
+}
+
+.arrowBoxCenteredTop {
+  // this will have an arror centered on the x and y of the parent
+  @extend .arrowBoxTop;
+  left: 20px; // width of the rotated square/hypotenuse of the arrow
+  transform: translateX(-50%);
+}
+
+.toolTip:not(.processing) {
+  // Adds a tooltip that gets its text from the data-tip attribute.
+  // You can't put this on a class that already had before and after rules, like an icon.
+  // To add a tooltip to an icon, wrap it in another element, and put the tooltip on that.
+  position: relative;
+  cursor: pointer;
+
+  &:before {
+    @extend .box;
+    content: attr(data-tip);
+    transform: translateX(-50%);
+    font-size: $tx5b;
+    line-height: 1.4;
+    font-weight: 400;
+    white-space: normal;
+    width: 255px;
+    box-sizing: border-box;
+    padding: $pad;
+    top: 100%;
+    margin-top: 10px;
+  }
+
+  &:after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    bottom: -33px;
+    transform: translate(-50%, -50%) rotate(-135deg);
+    -webkit-clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  }
+
+  &:before,
+  &:after {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    z-index: 1;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  &:hover:before,
+  &.openTooltip:before,
+  &:hover:after,
+  &.openToolTip:after {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &.toolTipTop {
+    &::before {
+      top: -19px;
+      transform: translate(-50%, -100%);
+    }
+
+    &::after {
+      top: 1px;
+      left: 50%;
+      transform: translate(-50%, -100%) rotate(-135deg);
+      -webkit-clip-path: polygon(0 0, 0 100%, 100% 0);
+    }
+  }
+}
+
+// Use for single line variable width tooltips. Factor in translations and
+// where you're tooltip will display. If it's possible it can get so wide that
+// it wouldn't look right, you'll probably want it to wrap (i.e. dont use this class).
+.toolTipNoWrap:not(.processing) {
+  @extend .toolTip;
+
+  &:before {
+    width: auto;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log*
+.DS_Store
+.tmp
+dist
+prod
+temp
+mainBuilt.js
+error.log
+.idea
+package-lock.json

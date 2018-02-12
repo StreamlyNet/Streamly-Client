@@ -1,0 +1,243 @@
+// https://css-tricks.com/snippets/sass/centering-mixin/
+@mixin center($horizontal: true, $vertical: true) {
+  position: absolute;
+  @if ($horizontal and $vertical) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($horizontal) {
+    left: 50%;
+    transform: translate(-50%, 0);
+  } @else if ($vertical) {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}
+
+@mixin chatOpeningTransition($props...) {
+  $transitions: ();
+  @each $prop in $props {
+    $transitions: append($transitions, #{$prop 0.5s ease}, comma);
+  }
+  transition: $transitions;
+}
+
+@mixin disabled {
+  pointer-events: none;
+  // Bumbing this up until we have a more context specific
+  // disable style. 0.2 is too low for most things.
+  opacity: 0.4;
+}
+
+@mixin alignToChat {
+  @media (max-width: #{$pageWidth + $padLg + $padLg + $chatOpen + $chatOpen}) {
+    @content;
+  }
+}
+
+@mixin hiRez {
+  @media (-webkit-min-device-pixel-ratio: 1.5) {
+    @content;
+  }
+}
+
+@mixin largeWidth {
+  @media (min-width: #{$largeWidth}) {
+    @content;
+  }
+}
+
+@mixin smallHeight {
+  @media (max-height: #{$smallHeight}) {
+    @content;
+  }
+}
+
+@mixin textSize($size) {
+  font-size: $size;
+
+  .emoji,
+  &.emoji.emoji { // mild hack to override specificity of ancestors
+    width: $size;
+  }
+}
+
+@mixin textColor($col1, $col2: $col1, $col3: $col2) {
+  /* generates the text color rules */
+  /* if no second color is passed, set everything to the first color */
+  color: $col1;
+
+  a {
+    color: $col2;
+  }
+
+  .btn, .listItem, &.btn, &.listItem {
+    /* btnTxt and iconBtn are included automatically because they extend .btn */
+    color: $col1;
+  }
+
+  @at-root {
+    a#{&} {
+      color: $col1;
+    }
+  }
+
+  input[type="radio"]:checked + label:before,
+  .fauxRadioBtn.active,
+  .fauxRadioBtn[data-state='selected'] {
+    background: $col1;
+  }
+
+  input[type="checkbox"] + label:before {
+    color: $col2;
+  }
+
+  input[type="checkbox"]:checked + label:before {
+    color: $col1;
+  }
+
+  .tab.active {
+    color: $col3;
+
+    &::after {
+      color: $col3;
+    }
+  }
+
+  // spinner will inherit text color
+  .spinner {
+    path,
+    rect {
+      fill: $col1;
+    }
+  }
+
+  // spinner will override inherited color if you directly add a color class to it
+  &.spinner {
+    path,
+    rect {
+      fill: $col1;
+    }
+  }
+
+  .iconWallet {
+    path,
+    rect {
+      fill: $col1;
+    }
+  }
+
+  &.iconWallet {
+    path,
+    rect {
+      fill: $col1;
+    }
+  }
+}
+
+@mixin triangle($width, $color: inherit) {
+  width: 0;
+  height: 0;
+  border-top: $width solid transparent;
+  border-bottom: $width solid transparent;
+  border-right-width: $width;
+  border-right-style: solid;
+  border-right-color: $color;
+}
+
+@mixin borderColor($col1, $col2: $border2) {
+  /* generates the border color rules */
+  border-color: $col1;
+
+  &:hover,
+  &:focus {
+    border-color: $col1;
+  }
+
+  input,
+  select,
+  textarea,
+  button,
+  .trumbowyg div[contenteditable]{
+    &:focus:not(.disabled) {
+      border-color: $col2;
+    }
+  }
+
+  hr {
+    border-color: $col1;
+  }
+
+  &.trumbowyg {
+    border-width: 0;
+
+    .trumbowyg-button-pane {
+      border: 1px solid $col1;
+
+      border-bottom: 0;
+
+      .trumbowyg-button-group::before {
+        background-color: $col1;
+      }
+    }
+
+    .trumbowyg-modal-submit {
+      color: #363838;
+      background-color: #25b4b0;
+      border: none;
+      &:hover{
+        color: #363838;
+        background-color: rgba(37, 180, 176, .9);//#25b4b0 in decimal
+        border: none;
+      }
+      &:active{
+        color: #363838;
+        background-color: rgba(37, 180, 176, .8);
+        border: none;
+      }
+      &[disabled]{
+        opacity: 0.7;
+        &:hover,&:active{
+          background-color: #25b4b0;
+          border: none;
+        }
+      }
+      &:focus{
+      color: #363838;
+      background-color: rgba(37, 180, 176, .8);
+      border: none;
+      }
+    }
+  }
+
+  .btn:hover,
+  .btn:focus,
+  &.btn:hover,
+  &.btn:focus,
+  .clrHover:hover,
+  .clrHover:focus,
+  &.clrHover:hover,
+  &.clrHover:focus {
+    border-color: $col2;
+
+    .disabled &,
+    &.disabled,
+    &:disabled {
+      border-color: $col1;
+    }
+  }
+}
+
+@keyframes fadeInAnim {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@mixin fadeIn($args...) {
+  animation: fadeInAnim $args;
+}
+

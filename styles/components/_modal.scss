@@ -1,0 +1,124 @@
+.modal {
+  position: absolute;
+  top: $bar;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: $overlay;
+
+  .modalContent {
+    min-width: 300px;
+    max-height: calc(100% - 50px);
+    border-radius: $corner;
+    @include center;
+    left: calc(50% - #{$chatClosed / 2});
+    @include chatOpeningTransition(left);
+    margin-bottom: 100px;
+
+    .chatOpen & {
+      left: calc(50% - #{$chatOpen / 2});
+    }
+
+    & > .cornerTR {
+      top: -40px;
+      right: 0;
+      position: absolute;
+    }
+    .clrP, .modalCloseBtn, .topControls .btnStrip.clrSh3 .btnProcessing,.topControls .js-messageBtn{
+        background-color: #edf1f3;
+    }
+    input.clrP, textarea.clrP, select.clrP, label.clrP, a.clrP, button.deleteAccount, .col9.row.contentBox.clrBr.clrP.clrSh2.pad, input, textarea, .boxProcessingFaded, button.browseMods,.addPhotoWrap, button.addPhoto, button.js-navBack{
+        background-color: #fff;
+    }
+  }
+
+  // These are .modalTop styles. Will also apply them to
+  // .modalScrollPage since you're really not going to want
+  // a modal that scrolls with the page and isn't positioned
+  // at the top.
+  &.modalTop .modalContent,
+  &.modalScrollPage .modalContent {
+    top: $padMd;
+    @include center(true, false);
+    left: calc(50% - #{$chatClosed / 2});
+
+    .chatOpen & {
+      left: calc(50% - #{$chatOpen / 2});
+    }
+  }
+
+  &.modalScrollPage {
+    overflow-y: scroll;
+    transform: none;
+    background-color: rgba(0, 0, 0, .7);
+
+    .modalContent {
+      max-height: none;
+      margin-bottom: $padGi;
+      padding: 0;
+      width: $modalContentInner;
+      overflow: visible;
+      left: 0;
+      transform: none;
+      // adjust by 20 px to visually center
+      margin-left: calc(((100% - (#{$modalContentInner + $chatClosed})) / 2) + 20px);
+      @include chatOpeningTransition(margin-left);
+      margin-bottom: 100px;
+
+      .chatOpen & {
+        left: 0;
+        margin-left: calc(((100% - (#{$modalContentInner + ($chatOpen - 5)})) / 2));
+      }
+
+      & > .cornerTR {
+        right: auto;
+        left: calc(#{$modalContentInner} - #{$buttonHeight});
+        top: 0;
+      }
+
+      .topControls {
+        margin-bottom: $padSm;
+        min-height: 35px;
+
+        &.withEndBtn {
+          // if a button, usually close, is at the end of the controls and absolutely positioned
+          width: calc(100% - #{$buttonHeight} - #{$padSm});
+        }
+      }
+    }
+
+    &.modalNarrow {
+      .modalContent {
+        width: $modalContentInnerNarrow;
+        margin-left: calc(((100% - (#{$modalContentInnerNarrow + $chatClosed})) / 2) + 28px);
+
+        .chatOpen & {
+          margin-left: calc(((100% - (#{$modalContentInnerNarrow + $chatOpen})) / 2) + 5px);
+        }
+
+        & > .cornerTR {
+          left: calc(#{$modalContentInnerNarrow} - #{$buttonHeight});
+        }
+      }
+    }
+
+    &.modalMedium {
+      .modalContent {
+        width: $modalContentInnerMedium;
+        margin-left: calc(((100% - (#{$modalContentInnerMedium + $chatClosed})) / 2) + 28px);
+
+        .chatOpen & {
+          margin-left: calc(((100% - (#{$modalContentInnerMedium + $chatOpen})) / 2) + 5px);
+        }
+
+        & > .cornerTR {
+          left: calc(#{$modalContentInnerMedium} - #{$buttonHeight});
+        }
+      }
+    }
+  }
+  .trumbowyg-button-pane,.trumbowyg-editor-visible{
+      background-color: #fff;
+  }
+}

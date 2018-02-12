@@ -1,0 +1,273 @@
+.search {
+  // this is a temporary style to fill the space that will be filled by the tab bar
+  position: relative;
+  padding-top: 17px;
+  min-height:710px;
+
+  .loadingSearch {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+  }
+
+  .searchProviders {
+    width: $pageWidth + $padLg + $padLg;
+    height: 100%;
+    padding: 0 $padLg;
+
+    .discoverLogo {
+      background-image: url('../../imgs/streamlyVectorIconNoText.svg');
+      // adjust the size and position so the borders inside the svg match the other buttons
+      height: 48px;
+      width: 48px;
+      margin-top: 5px;
+    }
+
+    .providersHeader {
+      width: 134px;
+    }
+
+    .providersBar {
+      display: flex;
+      align-items: stretch;
+
+      .providerWrapper {
+        display: flex;
+        align-items: stretch;
+        position: relative;
+
+        .selectingBox {
+          top: calc(100% + 10px);
+          width: 420px;
+          padding: $padLg;
+          transform: translateX(-50%);
+          left: calc(50% - 5px); // offset by half the margin on the right side of the parent
+        }
+
+        .searchProvider {
+          flex-shrink: 0;
+          width: auto;
+
+          .providerBtn {
+            padding: 0;
+
+            .providerInner {
+              opacity: .35;
+            }
+
+            &.selecting .providerInner {
+              opacity: 1;
+            }
+          }
+
+          &.active {
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+
+            .providerBtn .providerInner {
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      .addWrapper {
+        width: auto;
+
+        .addProvider {
+          position: absolute;
+          height: $thumb;
+        }
+      }
+
+      .providerBtn, .addBtn {
+        border-width: 1px;
+        border-style: solid;
+        border-radius: $corner;
+      }
+
+      .addBtn {
+        i:before {
+          font-size: 28px;
+        }
+      }
+
+      .addBox {
+        top: calc(100% + 12px);
+        min-width: 360px;
+      }
+    }
+  }
+
+  #pageTabBar.noTips {
+    .toolTip,
+    .toolTipNoWrap {
+      &:hover:before,
+      &:hover:after {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .searchBar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-radius: 3px;
+
+    .searchInput {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right-width: 0;
+
+      &:focus {
+        border-right-width: 1px;
+      }
+    }
+
+    .searchBtn {
+      padding: 0 $padLg;
+      line-height: 40px;
+      font-size: 1.4rem;
+      height: auto;
+      border-radius: 3px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      &.button--cian{
+          border: 1px solid  rgb(37, 180, 176);
+          &:hover{
+              color: #363838;
+              background-color: rgba(37, 180, 176, .9);//#25b4b0 in decimal
+              border: 1px solid rgba(37, 180, 176, .9);
+          }
+          &:active{
+              color: #363838;
+              background-color: rgba(37, 180, 176, .8);
+              border: 1px solid rgba(37, 180, 176, .8);
+          }
+      }
+    }
+  }
+
+  .filterWrapper {
+    padding-right: 5px;
+
+    label {
+      line-height: 1.4em;
+      min-height: 1.4em;
+      padding: 0.3em 0px;
+    }
+
+    .select2 {
+      margin-top: 12px;
+    }
+
+    .flexColWide {
+      margin-bottom: 10px;
+    }
+  }
+
+  .searchResults {
+
+    .listingsGrid {
+      min-height: 298px;
+    }
+
+    .loadingSearch {
+      display: none;
+    }
+
+    &.loading .loadingSearch {
+      display: flex;
+
+      .spinner {
+        position: absolute;
+        top: 150px;
+      }
+
+      .listingsGrid {
+        display: none;
+      }
+    }
+  }
+  .notAvailable{
+      opacity: .4;
+  }
+
+  //Slider customizations
+  input[class^="input-with-focus"]{
+      display: inline;
+      width: 103.3px;
+      height: 30px;
+      font-size: 12px;
+  }
+  [class^="slider__value--"]{
+      font-size: 12px;
+  }
+  .slider__value--min{
+    width: 100px;
+    display: inline-block;
+  }
+  .slider__value--max{
+      padding-left: 5px;
+  }
+  .noUi-base, .noUi-connects{
+      height: 10px;
+      .noUi-connect{
+          background-color: #25b4b0;
+      }
+  }
+  .noUi-horizontal{
+      height: 10px;
+      .noUi-handle{
+          width: 20px;
+          height: 20px;
+          left: -10px;
+          &::after,&::before{
+              display: none;
+          }
+      }
+  }
+  .noUi-target{
+    margin-left:4px;
+    margin-right:4px;
+  }
+
+  .fa.fa-filter{
+      font-size: 14px;
+  }
+  .price-slider[disabled="true"],.price-slider[disabled="true"]{
+      .noUi-connect{
+          opacity: .4;
+      }
+  }
+  .tagcloudBox {
+      .contentBox {
+      #tagcloud {
+        width: 100%;
+        height: 260px;
+        overflow: hidden;
+          h4 {
+            color: #262626;
+            font-size: 1.5rem;
+            font-family: 'bitcoinregular', 'noto_sans';
+          }
+          span {
+            cursor: pointer;
+          }
+      }
+      }
+  }
+  .no-results-message{
+      width: 100%;
+      text-align: center;
+      margin-top: 120px;
+  }
+  .jqcloud-word{
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+
+}

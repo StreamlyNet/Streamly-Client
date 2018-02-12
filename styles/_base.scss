@@ -1,0 +1,406 @@
+@font-face {
+  font-family: 'noto_sans';
+  src: url('../../fonts/NotoSans-Regular-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'noto_sans';
+  src: url('../../fonts/NotoSans-Bold-webfont.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'noto_sans';
+  src: url('../../fonts/NotoSans-Italic-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'noto_sans';
+  src: url('../../fonts/NotoSans-BoldItalic-webfont.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'bitcoinregular';
+  src: url('../../fonts/Bitcoin-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  // fonts
+  color: $text;
+  font: {
+    family: 'bitcoinregular', 'noto_sans';
+    size: $baseFontSize;
+    weight: 400;
+  }
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+body {
+  overflow: hidden;
+  margin: 0;
+
+  &.chatHover {
+    .modal,
+    #contentFrame {
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: transparent;
+
+        &:hover {
+          background: transparent;
+        }
+
+        &:active {
+          background: transparent;
+        }
+      }
+    }
+  }
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-user-drag: none;
+  -webkit-user-select: none; // quick clicks shall now not highlight
+  transition: color .15s  cubic-bezier(0, 0, 0.2, 1);
+  color: inherit;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+
+  &.link {
+    text-decoration: underline;
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid;
+  -webkit-margin-before: 0.5em;
+  -webkit-margin-after: 0.5em;
+
+  &.unleaded {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+  }
+
+  &.dashed {
+    border-bottom: 1px dashed;
+  }
+}
+
+ul {
+  margin: 0;
+}
+
+ul, ol {
+  &.unstyled {
+    padding: 0;
+
+    li {
+      list-style-type: none;
+    }
+  }
+}
+
+.bkgContain {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-y: 0;
+}
+
+.bkgCover {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+}
+
+#appFrame {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+  // index containers and sections
+  #pageNavContainer {
+    position: relative;
+    z-index: 4;
+  }
+
+  #contentFrame {
+    position: relative;
+    overflow-y: scroll;
+    height: calc(100% - #{$bar});
+    box-sizing: border-box;
+    z-index: 0;
+
+    #pageContainer {
+      padding-top: $barLg;
+
+      #pageTabBar {
+        position: fixed;
+        top: $bar;
+        left: 0;
+        right: $scrollbar;
+        z-index: 1;
+        width: 100%;
+        height: $barLg;
+        padding: 0 $scrollbar 0 0;
+        overflow: hidden;
+        background-color: #57575f;
+        .tabsItem__num{
+            display: block;
+            height: 18px;
+            text-align: center;
+            line-height: 19px;
+            border-radius: 12px;
+            color: #25b4b0;
+            margin-left: 5px;
+        }
+        .white{
+            color: #fff;
+        }
+
+        &.noTabs {
+          // there are no tabs, so overflow doesn't need to be hidden
+          // this allows arrow boxes and other elements outside the container bounds
+          overflow: visible;
+        }
+
+        .pageTabs {
+          width: $pageWidth + $padLg + $padLg;
+          height: 100%;
+          margin: 0 calc((100% - #{$pageWidth + $padLg + $padLg}) / 2) 0 auto;
+          @include chatOpeningTransition(margin);
+          position: relative;
+
+          .chatOpen & {
+            margin-right: $chatOpen;
+          }
+
+          .userIcon {
+            margin-right: $pad;
+          }
+
+          .tab {
+            border-radius: 0;
+            font-size: $tx4;
+            height: 54px; // set to match 100% height
+            border-bottom: 3px solid #57575f;
+            &.active {
+              border-bottom: 3px solid #25b4b0;
+            }
+          }
+        }
+      }
+
+      .pageContent {
+        width: $pageWidth + $padLg + $padLg;
+        box-sizing: border-box;
+        margin: 0 calc((100% - #{$pageWidth + $padLg + $padLg}) / 2) 0 auto;
+        padding: 0 $padLg $bar $padLg;
+        position: relative;
+        z-index: 0; // position below the pageTabBar for scrolling
+        @include chatOpeningTransition(margin);
+
+        @include alignToChat {
+
+          .chatOpen & {
+            margin-right: $chatOpen;
+          }
+        }
+      }
+    }
+  }
+
+  #chatContainer {
+    position: fixed;
+    top: $bar + $barLg -1; //overlap the border
+    right: $scrollbar; // don't cover scroll bars
+    width: $chatClosed;
+    height: calc(100% - #{$bar + $barLg});
+    box-sizing: border-box;
+    z-index: 2; // chat needs to be on top of modals
+    @include chatOpeningTransition(width, background-color, border-color, height);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: transparent;
+    border-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+
+    &:hover {
+
+      &::-webkit-scrollbar {
+        width: $scrollbar;
+      }
+    }
+
+    .chatOpen & {
+      width: $chatOpen;
+    }
+
+    .chatConvoOpen & {
+      height: calc(100% - #{$bar + $barLg + $chatConvoHeight -2});
+    }
+  }
+
+  #chatConvoContainer {
+    position: fixed;
+    right: $scrollbar;
+    bottom: -1px; // prevents the emoji tray from displaying at the very bottom
+    z-index: 2; // chat needs to be on top of modals
+    width: 225px;
+    height: $chatConvoHeight;
+    transform: translateY(105%);
+    transition: transform 300ms ease;
+
+    .chatConvoOpen & {
+      transform: translateY(0);
+    }
+  }
+}
+
+// turn off animations and transitions with this style
+
+#ov1.minEffects,
+#ov1.minEffects *,
+#ov1.minEffects #overlay,
+#ov1.minEffects #pageNav,
+#ov1.minEffects #statusBar {
+  transition: none !important;
+  -webkit-filter: none !important;
+  opacity: 1 !important;
+  transition-property: none !important;
+  animation: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+// utility classes
+
+#ov1 {
+
+  .hide {
+    display: none;
+  }
+
+  .invisible {
+    // use when an element is not visible but should occupy space in the DOM
+    visibility: hidden;
+  }
+
+  .visuallyHidden {
+    // use when an element most take no room in the DOM, but still be available for forms and JS
+    // from the HTML5 Boilerplate https://github.com/h5bp/html5-boilerplate
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap; /* 1 */
+  }
+
+  .TODO {
+    // put this class on elements that are not complete.
+    // this is used instead of visuallyHidden to make it clear it is in progress.
+    @extend .visuallyHidden;
+  }
+
+  .disabled {
+    @include disabled;
+  }
+
+  .overflowAuto {
+    overflow: auto;
+  }
+
+  .floL {
+    float: left;
+  }
+
+  .floR {
+    float: right;
+  }
+
+  .preWrap {
+    white-space: pre-wrap;
+  }
+
+  .inline {
+    display: inline;
+  }
+
+  .inlineBlock {
+    display: inline-block;
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  // external brand colors. They should not be overwritten by theme colors.
+  .twitterColor {
+    color: #00aced;
+  }
+
+  .facebookColor {
+    color: #3b5998;
+  }
+
+  .pinterestColor {
+    color: #bd081c;
+  }
+
+  .tumblrColor {
+    color: #35465c;
+  }
+}
+
+// Sometimes, I just like floats.
+.cf:before,
+.cf:after {
+  content: "";
+  display: table;
+}
+.cf:after {
+  clear: both;
+}
+
+// scrollbar styling
+::-webkit-scrollbar {
+  width: $scrollbar;
+  height: $scrollbar;
+}

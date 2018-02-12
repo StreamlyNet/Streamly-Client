@@ -1,0 +1,36 @@
+<div class="popInMessageHolder js-popInMessages"></div>
+
+<div class="topControls withEndBtn flex"></div>
+
+<div class="contentBox clrP clrBr clrSh3">
+    <div class="videoContainer__body display">
+      <div class="flex gutterHLg">
+        <div class="videoContainer" id="videoContainer">
+          <div id="remoteContainer">
+              <div class="callingScreen hide">
+                  <div class="callingScreen__name"><%= ob.remotePeerName %></div>
+                  <div class="callingScreen__image" style="<%= ob.avatarURL %>"></div>
+              </div>
+          </div>
+          <div  id="localVideoContainer" class="display">
+            <video id="localVideo"></video>
+          </div>
+          <div class="btnContainer display">
+            <div class="btnContainer__overlay"></div>
+            <button title="Mute" class="btn clrP clrBr btn-default clrSh2 js-mute "><i class="fa fa-microphone" aria-hidden="true"></i></button>
+            <button title="Pause video" class="btn clrP clrBr btn-default clrSh2 js-pause"><i class="fa fa-video-camera" aria-hidden="true"></i></i></button>
+            <button title="Fullscreen" class="btn clrP clrBr btn-default clrSh2 js-fullScreen"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+            <button title="End video" class="btn clrP clrBr btn-default red clrSh2 js-end"><i class="fa fa-phone end-call" aria-hidden="true"></i></button>
+          </div>
+          <div class="btnContainer top display">
+              <div class="callingString hide">Calling</div>
+              <div class="nickname text-ellipsis" title="<%= ob.remotePeerName %>"><%= ob.remotePeerName %></div>
+              <div class="durationDisplay__text"><span class="durationDisplay__number">00:00</span></div>
+              <div class="btnContainer__overlay"></div>
+              <div class="centPerMinute__container">$<span class="centPerMinute__value">0.00</span>cent/sec</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="videoContainer__spinner"><%= ob.spinner({ className: 'spinnerLg' }) %></div>
+</div>
