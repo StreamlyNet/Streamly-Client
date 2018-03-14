@@ -37,6 +37,19 @@ export default class {
     return uuid;
   }
 
+  playAlert() {
+    this.incomingAlert = new Audio('../audio/IncomingCall.wav');
+    this.incomingAlert.loop = true;
+    this.incomingAlert.play();
+  }
+
+  stopAlert() {
+    if (this.incomingAlert) {
+      this.incomingAlert.pause();
+      this.incomingAlert = null;
+    }
+  }
+
   attachSocketEvents() {
     this.socket.on('connectionReady', () => {
       // Next if statement is used to remove video modal if user has changed his network
@@ -57,6 +70,7 @@ export default class {
     this.socket.on('call', (data) => {
       console.log(`User ${data.from} is calling you`);
       console.log(`Id of the created room is ${data.roomId}`);
+      this.playAlert();
       launchNativeNotification(`User ${data.remotePeerName} is calling you`);
       // Get remote peer's profile image
       var avatarURL = getAvatarBgImage(data.avatarHashes);
@@ -106,6 +120,7 @@ export default class {
         this.videoObject.close();
       }
       if (this.incomingCallObject && this.incomingCallObject.remotePeerId === remotePeerId) {
+        this.stopAlert();
         this.incomingCallObject.close();
       }
       openSimpleMessage('', 'Missed call');
@@ -225,6 +240,7 @@ export default class {
 
   declineCall(remotePeerId) {
     this.socket.emit('declineCall', { to: remotePeerId, from: this.currentPeerId });
+    this.stopAlert();
     if (this.timer) {
       clearTimeout(this.timer);
     }
@@ -233,6 +249,7 @@ export default class {
 
   acceptCall(remotePeerId) {
     this.socket.emit('acceptCall', { to: remotePeerId, from: this.currentPeerId});
+    this.stopAlert();
     if (this.timer) {
       clearTimeout(this.timer);
     }
