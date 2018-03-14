@@ -14,7 +14,10 @@
     <div class="thumbCol disc clrBr2 clrSh1 flexNoShrink <% if (isOrderNotif) print('listingImage') %>" style="<%= ob[imageFunc](ob.notification.thumbnail || ob.notification.avatarHashes || {}) %>"></div>
     <% } %>
     <div class="flexExpand">
-      <div class="rowTn clamp2 notifMsg"><%= ob.notifText %></div>
+      <div class="rowTn clamp2 notifMsg">
+        <a class="clrTEm" href="#<%= ob.notification.peerId%>" title="<% if (ob.notification.fullName) { print(ob.notification.fullName) } %>">
+          <% if (ob.notification.shortName) { print(ob.notification.shortName) } else { print(ob.notification.peerId) } %></a> <%= ob.notifText%>
+      </div>
       <div class="clrT2 tx6"><%= ob.renderedTimeAgo %></div>
     </div>
   </div>

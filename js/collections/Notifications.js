@@ -188,9 +188,7 @@ export function getNotifDisplayData(attrs, options = {}) {
       getName(attrs.handle, attrs.peerId) :
       `<a class="clrTEm" href="#${attrs.peerId}">${getName(attrs.handle, attrs.peerId)}</a>`;
     route = `#${attrs.peerId}`;
-    text = app.polyglot.t(`notifications.text.${attrs.type}`, {
-      name,
-    });
+    text = app.polyglot.t(`notifications.text.${attrs.type}`);
   }
 
   return {

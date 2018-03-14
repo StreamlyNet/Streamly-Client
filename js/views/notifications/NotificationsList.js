@@ -58,6 +58,8 @@ export default class extends BaseVw {
                   handle: profile.get('handle') || '',
                   avatarHashes: profile.get('avatarHashes') &&
                     profile.get('avatarHashes').toJSON() || {},
+                  fullName: profile.get('name'),
+                  shortName: `${profile.get('name').slice(0, 8)}…`,
                 });
               });
           }

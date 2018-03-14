@@ -17,6 +17,7 @@ import PageNavServersMenu from './PageNavServersMenu';
 import { getNotifDisplayData } from '../collections/Notifications';
 import Notifications from './notifications/Notificiations';
 import SearchPage from './search/Search';
+import { getCachedProfiles } from '../models/profile/Profile';
 
 export default class extends BaseVw {
   constructor(options) {
@@ -111,7 +112,11 @@ export default class extends BaseVw {
         nativeNotifData.icon = app.getServerUrl(`ob/images/${notif.thumbnail.small}`);
       }
 
-      launchNativeNotification(notifDisplayData.text, nativeNotifData);
+      getCachedProfiles([notif.peerId])[0]
+        .done(profile => {
+          this.peerName = profile.get('name');
+          launchNativeNotification(`${this.peerName.slice(0, 8)}… ${notifDisplayData.text}`, nativeNotifData);
+        });
     }
   }
 

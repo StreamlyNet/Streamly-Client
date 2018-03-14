@@ -125,9 +125,9 @@
       "disputeUpdate": "%{disputeeName} shared their contract for the dispute with %{disputerName}.",
       "disputeClose": "The dispute with %{otherPartyName} has been closed.",
       "disputeAccepted": "The dispute with %{otherPartyName} has been finalized.",
-      "follow": "%{name} has followed you.",
-      "moderatorAdd": "%{name} has added you as a moderator.",
-      "moderatorRemove": "%{name} has removed you as a moderator."
+      "follow": " has followed you.",
+      "moderatorAdd": " has added you as a moderator.",
+      "moderatorRemove": " has removed you as a moderator."
     },
     "errorHeading": "There was an error fetching the notifications.",
     "btnRetry": "Retry",
