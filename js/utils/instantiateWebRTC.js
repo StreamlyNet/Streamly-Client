@@ -1,4 +1,3 @@
-import SimpleWebRTC from 'simplewebrtc';
 
 export function instantiateWebRtcObject(signallingServerUrl) {
   const webRTC = new SimpleWebRTC({
@@ -15,6 +14,7 @@ export function instantiateWebRtcObject(signallingServerUrl) {
   webRTC.on('connectionReady', (sessionId) => {
     console.log('Connection ready');
     console.log(sessionId);
+    webRTC.sessionId = sessionId;
   });
 
   webRTC.on('readyToCall', () => {

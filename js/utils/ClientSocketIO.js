@@ -20,7 +20,6 @@ export default class {
     // io is improted from index.html
     this.socket = io.connect(url);
     this.attachSocketEvents();
-    this.attachNetworkStateEvents();
   }
 
   // Used to create unique room name
@@ -52,16 +51,10 @@ export default class {
 
   attachSocketEvents() {
     this.socket.on('connectionReady', () => {
-      // Next if statement is used to remove video modal if user has changed his network
-      // and socket connection has timed out. This event is always called on connecting/reconnecting
-      // to socket.io. Must be kept, because user can connect to internet before iceConnectionStateChange
-      // event is triggered.
-      if (this.videoObject) {
-        this.endCall(this.videoObject.remotePeerId);
-        this.videoObject.close();
-        openSimpleMessage('', 'Video call ended, because internet connection was reset');
-      }
       console.log('Connection for ClientSocketIO is ready, begin to initialize session');
+      if (this.videoObject) {
+        this.iceRestart(null, true, 'connection ready');
+      }
       this.socket.emit('initializeSession', { obId: this.currentPeerId, sid: this.socket.id });
     });
     this.socket.on('logConnectedPeers', (data) => {
@@ -133,6 +126,7 @@ export default class {
       console.log(data);
     });
     this.socket.on('peerDisconnected', (remotePeerId) => {
+      console.log(`${remotePeerId} has disconnected`);
       // Check if the remote user has disconnected, while trying to call him
       // or receiving an incomming call
       if (this.videoObject && this.videoObject.remotePeerId === remotePeerId) {
@@ -193,26 +187,6 @@ export default class {
         });
       }
       this.isCalling = null;
-    });
-  }
-
-  attachNetworkStateEvents() {
-    // Close incoming modal if network connection drops.
-    window.addEventListener('offline', (e) => {
-      if (this.incomingCallObject) {
-        this.incomingCallObject.close();
-        openSimpleMessage('', 'Incoming call ended due to connectivity problem');
-      }
-    });
-
-    this.webRtc.on('iceConnectionStateChange', (data) => {
-      // Triggered if user is on a call and webrtc connection has been dropped.
-      // Webrtc connection is dropped if local user's or remote user's network
-      // connection is lost.
-      if (data.currentTarget.iceConnectionState === 'disconnected' && this.videoObject) {
-        this.videoObject.close();
-        openSimpleMessage('', 'Call ended due to connectivity problem');
-      }
     });
   }
 
@@ -299,6 +273,64 @@ export default class {
     });
     this.disableHeaderBtnsWhileVideoStreaming();
     return videoObject;
+  }
+
+  networkProblemMsg() {
+    openSimpleMessage('', 'Call ended due to connectivity problem');
+  }
+  /*
+    Helper function, which will be called on two events: 'connectionReady' and 'failed'.
+    By doing this we will be sure which user has lost connection to internet, because
+    'connectionReady' is triggered on new network connection and 'failed' is
+    triggered when ice connection state has changed, in other words when the WebRTC call
+    is about to drop.
+   */
+  iceRestart(failed, connectionReady, message) {
+    console.log(`In ice restart function from ${message}`);
+    if (!this.RTCFailedSession) {
+      this.RTCFailedSession = failed;
+    }
+    if (!this.connectionReady) {
+      this.connectionReady = connectionReady;
+    }
+    console.log(`Failed: ${this.failed}`);
+    console.log(`Connection ready: ${this.connectionReady}`);
+    if (!this.RTCFailedSession || !this.connectionReady) {
+      return;
+    }
+
+    this.RTCFailedSession = null;
+    this.connectionReady = null;
+
+    console.log('About to clear fail timer');
+    this.videoObject.clearFailTimer();
+
+    console.log('Attempting an icerestart');
+    this.videoObject.peer.icerestart(this.videoObject.webrtcSessionId);
+    this.videoObject.webrtcSessionId = this.webRtc.sessionId;
+  }
+  /*
+    We should clear variables which are used in ice restart, so we don't have an
+    inconsistent state, e.g.:
+
+    Peer A, who has not lost connection to network will call 'iceRestart' function when
+    ice connection state is changed to 'failed', because it is triggered on both peers.
+    Now RTCFailedSession variable for him is set to true and if A somehow looses connection
+    to network and reconnects right away, ice restart will be initiated without waiting for
+    the 'failed' event, because now we have both variables - RTCFailedSession and connectionReady
+    set to true. This is not right, because an ice restart should be initiated after 'failed' event.
+
+    'clearIceRestartVars' is called when ice connection state is changed to 'connected'
+    event is triggered.
+   */
+  clearIceRestartVars() {
+    if (this.RTCFailedSession) {
+      this.RTCFailedSession = null;
+    }
+
+    if (this.connectionReady) {
+      this.connectionReady = null;
+    }
   }
 
   createIncomingCallModal(webRtcObject, createdRoomId, remotePeerId, remotePeerName, listingName, avatarURL) {

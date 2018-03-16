@@ -16,11 +16,44 @@ export default class extends BaseModal {
     this.attachWebRTCEvents();
     this.isFullscreen = false;
     this.animationControlsTimeout = null;
+    this.webrtcSessionId = this.webRTC.sessionId;
+    this.failTimer = null;
   }
 
   // Attach WebRTC events
   attachWebRTCEvents() {
     this.webRTC.on('videoAdded', (video, peer) => {
+      this.peer = peer;
+      if (peer && peer.pc) {
+        peer.pc.on('iceConnectionStateChange', (event) => {
+          switch (peer.pc.iceConnectionState) {
+            case 'checking':
+              console.log('checking state');
+              break;
+            case 'connected':
+              console.log('connected state');
+              this.clearFailTimer();
+              app.io.clearIceRestartVars();
+            case 'completed': // on caller side
+              console.log('completed state');
+              break;
+            case 'disconnected':
+              console.log('disconnected state');
+              break;
+            case 'failed':
+              console.log('failed state');
+              this.failTimer = setTimeout(() => {
+                this.close();
+                app.io.networkProblemMsg();
+              }, 30 * 1000);
+              app.io.iceRestart(true, null, 'failed');
+              break;
+            case 'closed':
+              console.log('closed state');
+              break;
+          }
+        });
+      }
       console.log(this.webRTC.webrtc.peers);
       console.log('video added');
       this.video = video;
@@ -292,6 +325,14 @@ export default class extends BaseModal {
           this.$el.find('.js-fullScreen').prop("disabled", false);
       }
   };
+
+  clearFailTimer() {
+    console.log('Clearing fail timer');
+    if (this.failTimer) {
+      clearTimeout(this.failTimer);
+      this.failTimer = null;
+    }
+  }
 
   render() {
     loadTemplate('modals/video/video.html', t => {
