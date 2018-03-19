@@ -11,6 +11,15 @@
                   <div class="callingScreen__name"><%= ob.remotePeerName %></div>
                   <div class="callingScreen__image" style="<%= ob.avatarURL %>"></div>
               </div>
+              <div class="loadingScreen hide">
+                  <div class="loadingScreen__container">
+                      <div>
+                          <img class="loadingScreen__image" src='../imgs/streamlyVectorIconNoText.svg'/>
+                          <div class="loadingScreen__text">Reconnecting</div>
+                      </div>
+                  </div>
+
+              </div>
           </div>
           <div  id="localVideoContainer" class="display">
             <video id="localVideo"></video>

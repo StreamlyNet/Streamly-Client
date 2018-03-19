@@ -32,6 +32,7 @@ export default class extends BaseModal {
               break;
             case 'connected':
               console.log('connected state');
+              this.toggleLoadingWindow(false);
               this.clearFailTimer();
               app.io.clearIceRestartVars();
             case 'completed': // on caller side
@@ -39,6 +40,7 @@ export default class extends BaseModal {
               break;
             case 'disconnected':
               console.log('disconnected state');
+              this.toggleLoadingWindow(true);
               break;
             case 'failed':
               console.log('failed state');
@@ -332,6 +334,18 @@ export default class extends BaseModal {
       clearTimeout(this.failTimer);
       this.failTimer = null;
     }
+  }
+
+/**
+*This method shows/hides the "Loading Window" - when the call is reconnecting
+* flag - if it is true the loading window is displayed
+         if it is false the loading window is hidden
+*/
+  toggleLoadingWindow(flag){
+      this.$el.find('.loadingScreen').removeClass('hide');
+      if(!flag){
+          this.$el.find('.loadingScreen').addClass('hide');
+      }
   }
 
   render() {

@@ -9,6 +9,13 @@
     right: 0;
     z-index: 10;
 }
+
+.loadingDots{
+    display: inline-block;
+    animation: dotty steps(1,end) 2s infinite;
+    content: '';
+    position: absolute;
+}
 @keyframes dotty {
   0%   { content: ''; }
   25%  { content: '.'; }
@@ -58,6 +65,32 @@
                     color: white;
                     padding: 95px 0 35px 0;//35px originates from:(480 - 60 - 205 - 25 - 85)/3 = 35px 95px originates from: 95-60 = 35(60px is the top control panel height)
                     font-size: 16px;
+                }
+            }
+            .loadingScreen{
+                background-color: #4d5c6c;
+                height: 100%;
+                position: absolute;
+                width: 100%;
+                text-align: center;
+                top: 0;
+                .loadingScreen__image{
+                    width: 150px;
+                }
+                .loadingScreen__text{
+                    color: #fff;
+                    font-size: 16px;
+                    position: relative;
+                    top: -10px;
+                    &::after{
+                        @extend .loadingDots;
+                    }
+                }
+                .loadingScreen__container{
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
             }
             video{
@@ -185,10 +218,7 @@
                     text-align: center;
                 }
                 .callingString:after {
-                  display: inline-block;
-                  animation: dotty steps(1,end) 2s infinite;
-                  content: '';
-                  position: absolute;
+                  @extend .loadingDots;
                 }
             }
             .js-fullScreen[disabled]{
