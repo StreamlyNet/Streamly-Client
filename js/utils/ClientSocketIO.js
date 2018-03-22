@@ -103,6 +103,7 @@ export default class {
         openSimpleMessage('', 'Call ended by remote user');
       }
       if (this.incomingCallObject && this.incomingCallObject.remotePeerId === remotePeerId) {
+        this.stopAlert();
         this.incomingCallObject.close();
         openSimpleMessage('', 'Call ended by remote user');
       }
@@ -127,16 +128,9 @@ export default class {
     });
     this.socket.on('peerDisconnected', (remotePeerId) => {
       console.log(`${remotePeerId} has disconnected`);
-      // Check if the remote user has disconnected, while trying to call him
-      // or receiving an incomming call
-      if (this.videoObject && this.videoObject.remotePeerId === remotePeerId) {
-        this.changePeerState();
-        if (this.timer) {
-          clearTimeout(this.timer);
-        }
-        this.videoObject.close();
-      }
+      // Check if the remote user has disconnected, while receiving an incomming call
       if (this.incomingCallObject && this.incomingCallObject.remotePeerId === remotePeerId) {
+        this.stopAlert();
         this.changePeerState();
         if (this.timer) {
           clearTimeout(this.timer);
