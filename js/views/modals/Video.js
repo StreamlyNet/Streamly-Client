@@ -34,7 +34,6 @@ export default class extends BaseModal {
               console.log('connected state');
               this.toggleLoadingWindow(false);
               this.clearFailTimer();
-              app.io.clearIceRestartVars();
             case 'completed': // on caller side
               console.log('completed state');
               break;
@@ -48,7 +47,6 @@ export default class extends BaseModal {
                 this.close();
                 app.io.networkProblemMsg();
               }, 30 * 1000);
-              app.io.iceRestart(true, null, 'failed');
               break;
             case 'closed':
               console.log('closed state');

@@ -16607,6 +16607,7 @@ Peer.prototype.icerestart = function (sessionId) {
     this.iceRestart = true;
     this.oldSessionId = sessionId;
     constraints.iceRestart = true;
+    this.parent.emit('iceRestart');
     this.pc.offer(constraints, function (err, success) { });
 };
 
@@ -16806,12 +16807,7 @@ function SimpleWebRTC(opts) {
 
     connection.on('remove', function (room) {
         if (room.id !== self.connection.getSessionid()) {
-            if (!self.iceRestart) {
-                self.webrtc.removePeers(room.id, room.type);
-            }
-            else {
-                self.iceRestart = false;
-            }
+            self.webrtc.removePeers(room.id, room.type);
         }
     });
 
@@ -16940,6 +16936,14 @@ function SimpleWebRTC(opts) {
         if (data.type == 'volume') {
             self.emit('remoteVolumeChange', peer, data.volume);
         }
+    });
+
+    this.webrtc.on('iceRestart', function() {
+        self.connection.emit('join', self.roomName, function(err, roomDescription) {
+            if(err) {
+                self.emit('error', err)
+            }
+        });
     });
 
     if (this.config.autoRequestMedia) this.startLocalVideo();

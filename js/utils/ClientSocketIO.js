@@ -18,7 +18,7 @@ export default class {
     // calling a remote peer
     this.avatarHashes = options.avatarHashes;
     // io is improted from index.html
-    this.socket = io.connect(url);
+    this.socket = this.webRtc.connection.connection;
     this.attachSocketEvents();
   }
 
@@ -53,7 +53,7 @@ export default class {
     this.socket.on('connectionReady', () => {
       console.log('Connection for ClientSocketIO is ready, begin to initialize session');
       if (this.videoObject) {
-        this.iceRestart(null, true, 'connection ready');
+        this.iceRestart('Connection ready');
       }
       this.socket.emit('initializeSession', { obId: this.currentPeerId, sid: this.socket.id });
     });
@@ -119,9 +119,6 @@ export default class {
       }
       openSimpleMessage('', 'Missed call');
       this.enableHeaderBtns();
-    });
-    this.socket.on('message', (message) => {
-      console.log(message);
     });
     this.socket.on('getPeerSid', (data) => {
       console.log(data);
@@ -283,28 +280,13 @@ export default class {
     openSimpleMessage('', 'Call ended due to connectivity problem');
   }
   /*
-    Helper function, which will be called on two events: 'connectionReady' and 'failed'.
-    By doing this we will be sure which user has lost connection to internet, because
-    'connectionReady' is triggered on new network connection and 'failed' is
-    triggered when ice connection state has changed, in other words when the WebRTC call
-    is about to drop.
+    Helper function, which will be called on 'connectionReady' event. By doing this
+    we will be sure which user has lost connection to internet, because 'connectionReady'
+    is triggered on opening new WebSocket, which can be considered as new network connection.
    */
-  iceRestart(failed, connectionReady, message) {
-    console.log(`In ice restart function from ${message}`);
-    if (!this.RTCFailedSession) {
-      this.RTCFailedSession = failed;
-    }
-    if (!this.connectionReady) {
-      this.connectionReady = connectionReady;
-    }
-    console.log(`Failed: ${this.failed}`);
-    console.log(`Connection ready: ${this.connectionReady}`);
-    if (!this.RTCFailedSession || !this.connectionReady) {
-      return;
-    }
-
-    this.RTCFailedSession = null;
-    this.connectionReady = null;
+  iceRestart(context) {
+    console.log(`In ice restart function from ${context}`);
+    console.log(`${context}: ${this.isRestart}`);
 
     console.log('About to clear fail timer');
     this.videoObject.clearFailTimer();
@@ -312,29 +294,6 @@ export default class {
     console.log('Attempting an icerestart');
     this.videoObject.peer.icerestart(this.videoObject.webrtcSessionId);
     this.videoObject.webrtcSessionId = this.webRtc.sessionId;
-  }
-  /*
-    We should clear variables which are used in ice restart, so we don't have an
-    inconsistent state, e.g.:
-
-    Peer A, who has not lost connection to network will call 'iceRestart' function when
-    ice connection state is changed to 'failed', because it is triggered on both peers.
-    Now RTCFailedSession variable for him is set to true and if A somehow looses connection
-    to network and reconnects right away, ice restart will be initiated without waiting for
-    the 'failed' event, because now we have both variables - RTCFailedSession and connectionReady
-    set to true. This is not right, because an ice restart should be initiated after 'failed' event.
-
-    'clearIceRestartVars' is called when ice connection state is changed to 'connected'
-    event is triggered.
-   */
-  clearIceRestartVars() {
-    if (this.RTCFailedSession) {
-      this.RTCFailedSession = null;
-    }
-
-    if (this.connectionReady) {
-      this.connectionReady = null;
-    }
   }
 
   createIncomingCallModal(webRtcObject, createdRoomId, remotePeerId, remotePeerName, listingName, avatarURL) {
