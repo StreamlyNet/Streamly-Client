@@ -72,7 +72,7 @@
       transition: border-color .2s;
       font-size: $tx5;
       line-height: 1em; //allow dragging on area above and below the text input in the address bar
-      text-indent: 18px;
+      text-indent: -27px;
     }
 
     .bookmarkPage {
@@ -110,6 +110,15 @@
   }
 
   .searchWrapper {
+      &::before{
+          width: 10px;
+          height: 26px;
+          top: 1px;
+          left: 1px;
+          background: white;
+          content: "";
+          position: absolute;
+      }
     .torIndicator {
       display: none;
       background-image: url(../../imgs/icon-tor.png);
