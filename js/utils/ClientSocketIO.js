@@ -159,6 +159,10 @@ export default class {
       openSimpleMessage('', 'User is busy');
       this.enableHeaderBtns();
     });
+    this.socket.on('chatMsg', (data) => {
+      // TODO: Attach msg to chat container
+      console.log(data);
+    });
     // Event below fixes synchronization issues. It is triggered,
     // when local video has started, this insures that our stream
     // will always be passed to the remote peer

@@ -4,7 +4,7 @@ var socketIO = require('socket.io'),
     request = require('request')
 
 module.exports = function (server, config) {
-    var io = socketIO.listen(server);
+    var io = socketIO(server, {'pingInterval': 10000, 'pingTimeout': 50000});
     var mappingArray = [];
 
     function getCurrentTime() {
@@ -133,12 +133,11 @@ module.exports = function (server, config) {
 	      client.emit('connectionReady');
 
 	      client.on('initializeSession', function(data){
-	          console.log('[', getCurrentTime(),']', '[on.initializeSession] User ', data.obId, ' has connected');
+	          console.log('[', getCurrentTime(),']', '[on.initializeSession] User ', data.obId, ' has connected with session id ', client.id);
             pushPeerIdAndSessionId(data.obId, data.sid);
 	          client.emit('logConnectedPeers', mappingArray);
 		        changeAvailibiltyOfPeerListings(data.obId, 1);
 	      });
-
        client.on('call', function(data){
     	    if(!data) return;
             console.log('[',getCurrentTime(),']','[on.Call] Checking ', data.to, ' existence and availability')
@@ -214,10 +213,8 @@ module.exports = function (server, config) {
       	       	changePeersState(data.to, data.from, true);
       		var sessionId = getSessionIdFromPeerId(data.to);
       		var otherClient = io.to(sessionId);
-
       	   if(!otherClient){
              console.log('[',getCurrentTime(),']','[on.endCall] User ', data.to, ' is offline, does not exist or an error occured. Emitting userOffline event');
-             console.log(otherClient);
              client.emit('userOffline');
            }
            console.log('[',getCurrentTime(),']','[onEndCall] User ', data.from, ' has ended the call with', data.to , ' . Emitting callEnded event');
@@ -291,25 +288,25 @@ module.exports = function (server, config) {
   	  }
   	});
 
-    client.on('changeSdp', function(data) {
-      if(!data) return;
+	client.on('chatMsg', function (data) {
+	    if(!data) return;
 
-      var peerExistence = checkPeerExistenceAndAvailability(data.to);
+	    var peerExistence = checkPeerExistenceAndAvailability(data.to);
 
-      if(typeof peerExistence !== 'undefined' && peerExistence.exists){
-        console.log('After if in change sdp');
-        var sessionId = getSessionIdFromPeerId(data.to);
-        var otherClient = io.to(sessionId);
+	    if (typeof peerExistence !== 'undefined' && peerExistence.exists) {
+	       var sessionId = getSessionIdFromPeerId(data.to);
+	       var otherClient = io.to(sessionId);
 
-	console.log('[',getCurrentTime(),']','[on.changeSdp] Changing sdp of ', data.to);
+	       if (!otherClient) {
+		  client.emit('userOffline');
+	       }
 
-        if(!otherClient) {
-          return;
-        }
-
-        otherClient.emit('sdpChanged', { data: data.data, from: data.from });
-      }
-    });
+	       otherClient.emit('chatMsg', data);
+	    }
+	    else {
+	       client.emit('userOffline');
+	    }
+	});
 
         // pass a message to another id
 	 client.on('message', function (details) {
@@ -349,6 +346,7 @@ module.exports = function (server, config) {
         }
 
         function join(name, cb) {
+	    console.log('[join] ', client.id,' joining room');
             // sanity check
             if (typeof name !== 'string') return;
             // check if maximum number of clients reached
@@ -367,7 +365,7 @@ module.exports = function (server, config) {
         // we don't want to pass "leave" directly because the
         // event type string of "socket end" gets passed too.
         client.on('disconnect', function () {
-	         console.log("[disconnect] client has disconnected");
+	   console.log("[disconnect] client has disconnected ", client.id);
            removeFeed();
 	         var peerId = getPeerIdFromSessionId(client.id);
 		       changeAvailibiltyOfPeerListings(peerId, 0);
@@ -376,6 +374,7 @@ module.exports = function (server, config) {
         });
 
         client.on('leave', function () {
+	    console.log("[leave] ", client.id, ' leaving room ', client.room);
             removeFeed();
         });
 
