@@ -294,10 +294,9 @@
             .js-fullScreen[disabled]{
                 opacity: .2;
             }
-            &>.openchatbtn{
-              float: right;
-              margin-right: 7%;
-            }
+        }
+        .notification{
+          border: solid #FFA500;
         }
     }
 }

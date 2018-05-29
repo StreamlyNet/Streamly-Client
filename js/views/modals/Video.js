@@ -254,6 +254,7 @@ export default class extends BaseModal {
 
   handleChatBtnClick() {
     this.toggleChatWindow();
+    this.removeNotification();
     this.handleSendMsg();
   }
 
@@ -406,6 +407,18 @@ export default class extends BaseModal {
     var message = this.createChild(VideoChatMsg, { messageData });
 
     this.$el.find('.chatContainer').prepend(message.render().$el[0].innerHTML);
+
+    this.addNotification();
+  }
+
+  addNotification() {
+    if (!this.isChatOpen) {
+      this.$el.find('.btnContainer .openchatbtn').addClass('notification');
+    }
+  }
+
+  removeNotification() {
+    this.$el.find('.btnContainer .openchatbtn').removeClass('notification');
   }
 
   render() {
