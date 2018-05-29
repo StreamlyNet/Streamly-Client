@@ -30,6 +30,9 @@
             <button title="Pause video" class="btn clrP clrBr btn-default clrSh2 js-pause"><i class="fa fa-video-camera" aria-hidden="true"></i></i></button>
             <button title="Fullscreen" class="btn clrP clrBr btn-default clrSh2 js-fullScreen"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
             <button title="End video" class="btn clrP clrBr btn-default red clrSh2 js-end"><i class="fa fa-phone end-call" aria-hidden="true"></i></button>
+            <% if(ob.fromWidget) {%>
+            <button title="Chat" class="btn clrP clrBr btn-default clrSh2 js-openChat"><i class="fa fa-comments" aria-hidden="true"></i></button>
+            <% } %>
           </div>
           <div class="btnContainer top display">
               <div class="callingString hide">Calling</div>
@@ -39,6 +42,13 @@
               <div class="centPerMinute__container">$<span class="centPerMinute__value">0.00</span>cent/sec</div>
           </div>
         </div>
+        <% if(ob.fromWidget) {%>
+        <div class="chatContainer">
+          <img class="chatLogo" src="../imgs/streamlyVectorIconNoText.png" >
+          <div class="chatBar"></div>
+          <input class="chatInput" placeholder="Type a message..." type="text">
+        </div>
+        <% } %>
       </div>
     </div>
     <div class="videoContainer__spinner"><%= ob.spinner({ className: 'spinnerLg' }) %></div>

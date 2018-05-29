@@ -67,6 +67,8 @@ export default class {
       launchNativeNotification(`User ${data.remotePeerName} is calling you`);
       // Get remote peer's profile image
       var avatarURL = getAvatarBgImage(data.avatarHashes);
+      // Boolean variable, which will tell us from where the call was initiated
+      this.fromWidget = data.fromWidget;
       // Create modal with two options Accept and Decline
       this.incomingCallObject = this.createIncomingCallModal(this.webRtc, data.roomId, data.from, data.remotePeerName, data.listingName, avatarURL);
     });
@@ -160,8 +162,9 @@ export default class {
       this.enableHeaderBtns();
     });
     this.socket.on('chatMsg', (data) => {
-      // TODO: Attach msg to chat container
-      console.log(data);
+      if (this.videoObject.remotePeerId === data.from) {
+        this.videoObject.prependMsg(data);
+      }
     });
     // Event below fixes synchronization issues. It is triggered,
     // when local video has started, this insures that our stream
@@ -213,7 +216,7 @@ export default class {
       remotePeerName: remotePeerName,
       avatarHashes: avatarHashes,
     };
-    this.videoObject = this.createVideoModal(this.webRtc, 'undefined', remotePeerId, remotePeerName, listingName, avatarURL, true);
+    this.videoObject = this.createVideoModal(this.webRtc, 'undefined', remotePeerId, remotePeerName, listingName, avatarURL, true, null);
     this.webRtc.startLocalVideo();
   }
 
@@ -237,7 +240,7 @@ export default class {
 
   transmitAcceptedCall(data) {
     this.isCalling = false;
-    this.videoObject = this.createVideoModal(this.webRtc, data.roomId, data.remotePeerId, data.remotePeerName, data.listingName, data.avatarURL);
+    this.videoObject = this.createVideoModal(this.webRtc, data.roomId, data.remotePeerId, data.remotePeerName, data.listingName, data.avatarURL, null, this.fromWidget);
     this.webRtc.startLocalVideo();
     this.receivedCallData = data;
   }
@@ -254,7 +257,11 @@ export default class {
     this.socket.emit('changeSelfState', { from: this.currentPeerId });
   }
 
-  createVideoModal(webRtcObject, createdRoomId, remotePeerId, remotePeerName, listingName, avatarURL, showCallingWindow) {
+  sendChatMessage(data) {
+    this.socket.emit('chatMsg', data);
+  }
+
+  createVideoModal(webRtcObject, createdRoomId, remotePeerId, remotePeerName, listingName, avatarURL, showCallingWindow, fromWidget) {
     const videoObject = new Video({
       dismissOnEscPress: false,
       showCloseButton: false,
@@ -265,7 +272,8 @@ export default class {
       remotePeerName: remotePeerName,
       listingName: listingName,
       avatarURL: avatarURL,
-      showCallingWindow: showCallingWindow
+      showCallingWindow: showCallingWindow,
+      fromWidget: fromWidget,
     });
 
     this.videoModal = videoObject.render().open();

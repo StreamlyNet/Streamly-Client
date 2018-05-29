@@ -162,6 +162,7 @@ module.exports = function (server, config) {
            	      remotePeerName: data.remotePeerName,
            	      listingName: data.listingName,
            	      avatarHashes: data.avatarHashes,
+                  fromWidget: data.fromWidget
         	      }
                 console.log('[',getCurrentTime(),']','[on.Call] User ', data.from, ' is calling ', data.to, ' . Emitting call event');
 

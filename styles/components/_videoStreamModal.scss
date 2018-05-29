@@ -116,6 +116,9 @@
                 z-index: 11;
             }
         }
+        .chatContainer{
+          display: none;
+        }
         .videoContainer__body{
             min-width: 640px;
             transition: $defaultTransition;
@@ -123,6 +126,73 @@
             &.display{
                 opacity: 1;
             }
+          .chatContainer.chatOpen{
+            display: flex;
+            width: 30%;
+            background-color: #d5dde1;
+            height: 480px;
+            float: left;
+            position: relative;
+            padding: 1%;
+            font-size: 14px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            flex-direction: column;
+          }
+          .videoContainer.chatOpen video{
+            object-fit: cover;
+          }
+          .chatLogo{
+            width: 100px;
+            background-color: #4d5c6c;
+            padding: 10px;
+            border-radius: 60px;
+            position: absolute;
+            z-index: 0;
+            top: calc(50% - 60px);
+            left: calc(50% - 60px);
+            opacity: .2;
+          }
+          .chatInput{
+            height: 30px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 3px;
+            text-indent: 5px;
+            font-size: 14px;
+            width: 100%;
+          }
+        }
+        .chatBubble{
+          padding: 5px;
+          max-width: 80%;
+          border-radius: 5px;
+          margin: 5px 0 5px 0;
+          &:first-child{
+            margin-bottom: 10px;
+          }
+          &:last-child{
+            margin-top: 0;
+          }
+          &.mine{
+            background-color: #25b4b0;
+            align-self: flex-end;
+          }
+          &.theirs{
+            background-color: #fff;
+            align-self: flex-start;
+          }
+          &>.caption{
+            font-size: 10px;
+            margin-bottom: 3px;
+            font-weight: 700;
+          }
+          &>.time{
+            font-size: 9px;
+            margin-top: 3px;
+            font-weight: 700;
+            text-align: right;
+          }
         }
         .contentBox{
             position: relative;
@@ -223,6 +293,10 @@
             }
             .js-fullScreen[disabled]{
                 opacity: .2;
+            }
+            &>.openchatbtn{
+              float: right;
+              margin-right: 7%;
             }
         }
     }

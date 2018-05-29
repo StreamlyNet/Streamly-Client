@@ -1,6 +1,7 @@
 import loadTemplate from '../../utils/loadTemplate';
 import BaseModal from './BaseModal';
 import app from '../../app';
+import VideoChatMsg from '../chat/VideoChatMsg';
 
 export default class extends BaseModal {
   constructor(options = {}) {
@@ -12,9 +13,11 @@ export default class extends BaseModal {
     this.listingName = options.listingName;
     this.avatarURL = options.avatarURL;
     this.showCallingWindow = options.showCallingWindow;
+    this.fromWidget = options.fromWidget;
     this.options = options;
     this.attachWebRTCEvents();
     this.isFullscreen = false;
+    this.isChatOpen = false;
     this.animationControlsTimeout = null;
     this.webrtcSessionId = this.webRTC.sessionId;
     this.failTimer = null;
@@ -130,6 +133,7 @@ export default class extends BaseModal {
       'click .js-mute': 'handleMuteBtnClick',
       'click .js-pause': 'handlePauseBtnClick',
       'click .js-end': 'handleEndBtnClick',
+      'click .js-openChat': 'handleChatBtnClick',
 //      'mouseenter .contentBox': 'handleDisplayVideoControls',
 //      'mouseleave .contentBox': 'handleHideVideoControls',
       ...super.events(),
@@ -248,6 +252,11 @@ export default class extends BaseModal {
     this.close();
   }
 
+  handleChatBtnClick() {
+    this.toggleChatWindow();
+    this.handleSendMsg();
+  }
+
   onClosingModal() {
     clearInterval(window.callDurationInterval);
     window.callDurationNumber = 0;
@@ -346,11 +355,65 @@ export default class extends BaseModal {
       }
   }
 
+  toggleChatWindow() {
+    if (!this.isChatOpen) {
+      this.isChatOpen = true;
+      this.$el.find('.videoContainer').addClass('chatOpen');
+      this.$el.find('.chatContainer').addClass('chatOpen');
+    }
+    else {
+      this.isChatOpen = false;
+      this.$el.find('.videoContainer').removeClass('chatOpen');
+      this.$el.find('.chatContainer').removeClass('chatOpen');
+    }
+  }
+
+  handleSendMsg() {
+    var self = this;
+    this.$el.find('.chatContainer .chatInput').keypress((e) => {
+      if (e.which === 13) {
+        var message = $(e.currentTarget).val().trim();
+
+        if (message === '') {
+          return;
+        }
+
+        var data = {
+          from: app.profile.get('name'),
+          to: this.remotePeerId,
+          msg: message,
+        };
+
+        this.prependMsg(data, true);
+
+        $(e.currentTarget).val('');
+
+        app.io.sendChatMessage(data);
+      }
+    });
+  }
+
+  prependMsg(data, isMine) {
+    var messageData = {
+      msg: data.msg,
+      from: data.from,
+    };
+
+    if (isMine) {
+      messageData.from = 'You';
+    }
+
+    var message = this.createChild(VideoChatMsg, { messageData });
+
+    this.$el.find('.chatContainer').prepend(message.render().$el[0].innerHTML);
+  }
+
   render() {
     loadTemplate('modals/video/video.html', t => {
       this.$el.html(t({
           avatarURL: this.avatarURL,
-          remotePeerName: this.remotePeerName
+          remotePeerName: this.remotePeerName,
+          fromWidget: this.fromWidget,
       }));
     });
 
