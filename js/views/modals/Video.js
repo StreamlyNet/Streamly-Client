@@ -301,10 +301,12 @@ export default class extends BaseModal {
       containerSelector.off();
       var self = this;
       containerSelector.mouseenter(function(){
+          self.mouseIn = true;
          self.handleDisplayVideoControls(self);
       });
       containerSelector.mouseleave(
           function(){
+            self.mouseIn = false;
              self.handleHideVideoControls(self);
           });
   }
@@ -402,11 +404,12 @@ export default class extends BaseModal {
 
     if (isMine) {
       messageData.from = 'You';
+      messageData.isMine = true;
     }
 
     var message = this.createChild(VideoChatMsg, { messageData });
 
-    this.$el.find('.chatContainer').prepend(message.render().$el[0].innerHTML);
+    this.$el.find('.chatContainer .chatBar').prepend(message.render().$el[0].innerHTML);
 
     this.addNotification();
   }
@@ -414,6 +417,15 @@ export default class extends BaseModal {
   addNotification() {
     if (!this.isChatOpen) {
       this.$el.find('.btnContainer .openchatbtn').addClass('notification');
+
+      clearTimeout(this.animationControlsTimeout);
+      this.animationControlsTimeout = null;
+      this.handleDisplayVideoControls(this);
+      this.animationControlsTimeout = setTimeout(() => {
+        if (!this.mouseIn) {
+          this.handleHideVideoControls(this);
+        }
+      }, 2000);
     }
   }
 

@@ -29,12 +29,21 @@
         margin-left: calc(((100% - (#{$videoModalWidth + $chatClosed})) / 2) + 20px);
         #localVideoContainer{
             transition: $defaultTransition;
+            position: absolute;
+            bottom: 0;
+            left: 0;
             opacity: 0;
+            z-index: 10;
+            width: 100px;
             min-height: 100px;
             @extend .localVideo--props;
             #localVideo{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                z-index: 10;
                 opacity: 0;
-                width: 150px;
+                width: 112.7px;
                 @extend .localVideo--props;
             }
             &.display{
@@ -128,7 +137,7 @@
             }
           .chatContainer.chatOpen{
             display: flex;
-            width: 30%;
+            width: 40%;
             background-color: #d5dde1;
             height: 480px;
             float: left;
@@ -138,6 +147,15 @@
             box-sizing: border-box;
             overflow-y: auto;
             flex-direction: column;
+          }
+          .chatContainer .chatBar{
+            display: flex;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+            flex-flow: column-reverse;
+            height: 100%;
           }
           .videoContainer.chatOpen video{
             object-fit: cover;
@@ -168,6 +186,7 @@
           max-width: 80%;
           border-radius: 5px;
           margin: 5px 0 5px 0;
+          min-width: 40%;
           &:first-child{
             margin-bottom: 10px;
           }
@@ -206,7 +225,12 @@
         }
         .videoContainer{
             position: relative;
-            height: 480px
+            height: 480px;
+            margin-right: 0;
+        }
+        .btnContainer__video{
+          float: left;
+          margin-left: calc(50% - 102px);
         }
         .btnContainer{
             position: absolute;
@@ -228,7 +252,7 @@
                 bottom: 0;
                 z-index: 0;
             }
-            & > .btn{
+            .btn{
                 font-size: 18px;
                 width: 45px;
                 height: 45px;
@@ -238,7 +262,7 @@
                 border-radius: 25px;
             }
 
-            & > .btn.red.btn-default{
+            .btn.red.btn-default{
                 color: #fff;
                 background-color: #d9534f;
                 border-color: #d43f3a;
@@ -248,7 +272,7 @@
                     border-color: #ac2925;
                 }
             }
-            & > .btn-default{
+            .btn-default{
                 &:not([disabled]):hover{
                     color: #333;
                     background-color: #e6e6e6;
@@ -294,6 +318,10 @@
             .js-fullScreen[disabled]{
                 opacity: .2;
             }
+          & > .openchatbtn {
+            float: right;
+            margin-right: 7%;
+          }
         }
         .notification{
           border: solid #FFA500;

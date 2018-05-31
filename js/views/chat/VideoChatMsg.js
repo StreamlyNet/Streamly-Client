@@ -7,6 +7,7 @@ export default class extends baseVw {
 
     this.msg = options.messageData.msg;
     this.from = options.messageData.from;
+    this.isMine = options.messageData.isMine;
   }
 
   getTime() {
@@ -28,6 +29,7 @@ export default class extends baseVw {
         msg: this.msg,
         sender: this.from,
         timestamp: this.timestamp,
+        isMine: this.isMine,
       }));
     });
 

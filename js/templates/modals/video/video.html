@@ -26,13 +26,20 @@
           </div>
           <div class="btnContainer display">
             <div class="btnContainer__overlay"></div>
+            <% if(ob.fromWidget) {%>
+            <div class="btnContainer__video">
+              <button title="Mute" class="btn clrP clrBr btn-default clrSh2 js-mute "><i class="fa fa-microphone" aria-hidden="true"></i></button>
+              <button title="End video" class="btn clrP clrBr btn-default red clrSh2 js-end"><i class="fa fa-phone end-call" aria-hidden="true"></i></button>
+              <button title="Pause video" class="btn clrP clrBr btn-default clrSh2 js-pause"><i class="fa fa-video-camera" aria-hidden="true"></i></button>
+              <button title="Fullscreen" class="btn clrP clrBr btn-default clrSh2 js-fullScreen"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+            </div>
+            <button title="Chat" class="btn clrP clrBr btn-default clrSh2 openchatbtn js-openChat"><i class="fa fa-comments" aria-hidden="true"></i></button>
+            <% } else {%>
             <button title="Mute" class="btn clrP clrBr btn-default clrSh2 js-mute "><i class="fa fa-microphone" aria-hidden="true"></i></button>
-            <button title="Pause video" class="btn clrP clrBr btn-default clrSh2 js-pause"><i class="fa fa-video-camera" aria-hidden="true"></i></i></button>
+            <button title="Pause video" class="btn clrP clrBr btn-default clrSh2 js-pause"><i class="fa fa-video-camera" aria-hidden="true"></i></button>
             <button title="Fullscreen" class="btn clrP clrBr btn-default clrSh2 js-fullScreen"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
             <button title="End video" class="btn clrP clrBr btn-default red clrSh2 js-end"><i class="fa fa-phone end-call" aria-hidden="true"></i></button>
-            <% if(ob.fromWidget) {%>
-            <button title="Chat" class="btn clrP clrBr btn-default clrSh2 openchatbtn js-openChat"><i class="fa fa-comments" aria-hidden="true"></i></button>
-            <% } %>
+            <%} %>
           </div>
           <div class="btnContainer top display">
               <div class="callingString hide">Calling</div>

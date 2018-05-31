@@ -1,4 +1,4 @@
-<div class="chatBubble">
+<div class="chatBubble <% if(ob.isMine) { print("mine") } else { print("theirs") } %>">
   <div class="caption"><%= ob.sender %></div>
   <span class="text"><%= ob.msg %></span>
   <div class="time"><%= ob.timestamp %></div>
