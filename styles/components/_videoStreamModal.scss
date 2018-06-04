@@ -303,6 +303,9 @@
                     background-color: #d4d4d4;
                     border-color: #8c8c8c;
                 }
+                &.notification,&.notification:hover,&.notification:not(.red):not([disabled]):active,&.notification:focus{
+                    border: 2px solid #ffa200;
+                }
             }
             .fa-phone.end-call{
                 transform: rotate(135deg);
@@ -343,8 +346,15 @@
             margin-right: 7%;
           }
         }
-        .notification{
-          border: solid #FFA500;
+        .notification::after{
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #ffa200;
+            top: -1px;
+            right: 2px;
         }
     }
 }
