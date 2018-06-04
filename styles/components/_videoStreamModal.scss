@@ -76,6 +76,14 @@
                     font-size: 16px;
                 }
             }
+            &.fullScreen video {
+              height: 100vh;
+              width: 100vw;
+            }
+            &.fullScreen.chatOpen video {
+              height: 100vh;
+              width: 80vw;
+            }
             .loadingScreen{
                 background-color: #4d5c6c;
                 height: 100%;
@@ -147,6 +155,10 @@
             box-sizing: border-box;
             overflow-y: auto;
             flex-direction: column;
+          }
+          .chatContainer.fullScreen.chatOpen{
+            height: 100vh;
+            width: 20vw;
           }
           .chatContainer .chatBar{
             display: flex;
@@ -227,6 +239,14 @@
             position: relative;
             height: 480px;
             margin-right: 0;
+            &.fullScreen{
+              height: 100vh;
+              width: 100vw;
+            }
+            &.fullScreen.chatOpen{
+              height: 100vh;
+              width: 80vw;
+            }
         }
         .btnContainer__video{
           float: left;

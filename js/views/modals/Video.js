@@ -148,7 +148,7 @@ export default class extends BaseModal {
         that.$el.find('.btnContainer').removeClass('display');
     }
 
-  attachHandleFullScreen(){
+  attachHandleFullScreen() {
       var self = this;
       self.$el.find('.js-fullScreen').click(function(){
           self.handleFullScreenBtnClick(self)
@@ -161,40 +161,42 @@ export default class extends BaseModal {
   }
 
   handleFullScreenBtnClick(self) {
-    const fullScreenVideo = self.$el.find('.videoContainer')[0];
+    const fullScreenVideo = self.$el.find('.videoContainer__body')[0];
     var fullscreenButton = self.$el.find('.js-fullScreen');
     var remoteVideo = self.$el.find('#remoteContainer')[0];
     if (fullScreenVideo && fullScreenVideo.webkitRequestFullscreen) {
       fullScreenVideo.webkitRequestFullscreen();
       self.isFullscreen = true;
       self.toggleControlsInFullscreenMode(self);
-      $('.videoContainer').css('height','100vh');
-      $('.videoContainer').css('width','100vw');
-      $('#remoteContainer video').css('height','100vh');
-      $('#remoteContainer video').css('width','100vw');
+      $('.videoContainer').addClass('fullScreen');
+      $('#remoteContainer').addClass('fullScreen');
+      $('.chatContainer').addClass('fullScreen');
       fullscreenButton.off();
       fullscreenButton.attr('title', 'Exit fullScreen');
       fullscreenButton.html('<i class="fa fa-expand" aria-hidden="true"></i>');
-      fullscreenButton.click(function(){self.handleCancelFullScreenBtnClick(self)});
+      fullscreenButton.click(function() {
+        self.handleCancelFullScreenBtnClick(self)
+      });
     }
   }
 
   handleCancelFullScreenBtnClick(self){
-      const fullScreenVideo = self.$el.find('.videoContainer');
+      const fullScreenVideo = self.$el.find('.videoContainer__body');
       var fullscreenButton = self.$el.find('.js-fullScreen');
       if (fullScreenVideo && document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
         self.isFullscreen = false;
         self.$el.find(".contentBox").off('mousemove');
         clearTimeout(self.animationControlsTimeout);
-        $('.videoContainer').css('height','480px');
-        $('.videoContainer').css('width','640px');
-        $('#remoteContainer video').css('height','480px');
-        $('#remoteContainer video').css('width','640px');
+        $('.videoContainer').removeClass('fullScreen');
+        $('#remoteContainer').removeClass('fullScreen');
+        $('.chatContainer').removeClass('fullScreen');
         fullscreenButton.off();
         fullscreenButton.attr('title', 'FullScreen');
         fullscreenButton.html('<i class="fa fa-arrows-alt" aria-hidden="true"></i>');
-        fullscreenButton.click(function(){self.handleFullScreenBtnClick(self)});
+        fullscreenButton.click(function() {
+          self.handleFullScreenBtnClick(self)
+        });
       }
   }
 
@@ -363,11 +365,15 @@ export default class extends BaseModal {
       this.isChatOpen = true;
       this.$el.find('.videoContainer').addClass('chatOpen');
       this.$el.find('.chatContainer').addClass('chatOpen');
+      if (this.isFullscreen) {
+        this.$el.find('#remoteContainer').addClass('chatOpen');
+      }
     }
     else {
       this.isChatOpen = false;
       this.$el.find('.videoContainer').removeClass('chatOpen');
       this.$el.find('.chatContainer').removeClass('chatOpen');
+      this.$el.find('#remoteContainer').removeClass('chatOpen');
     }
   }
 
