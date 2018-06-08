@@ -137,6 +137,7 @@ export default class {
           clearTimeout(this.timer);
         }
         this.videoObject.close();
+        openSimpleMessage('', 'Call ended by remote user');
       }
       if (this.incomingCallObject && this.incomingCallObject.remotePeerId === remotePeerId) {
         this.stopAlert();
@@ -145,6 +146,7 @@ export default class {
           clearTimeout(this.timer);
         }
         this.incomingCallObject.close();
+        openSimpleMessage('', 'Call ended by remote user');
       }
     });
     this.socket.on('returnConnectedPeers', (data) => {

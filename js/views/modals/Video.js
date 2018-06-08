@@ -114,7 +114,6 @@ export default class extends BaseModal {
     this.webRTC.on('videoRemoved', (video, peer) => {
       console.log('Remote video removed (remote peer disconnected)');
       app.io.changePeerState();
-      this.close();
     });
   }
 
