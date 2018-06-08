@@ -164,7 +164,7 @@ export default class {
       this.enableHeaderBtns();
     });
     this.socket.on('chatMsg', (data) => {
-      if (this.videoObject.remotePeerId === data.from) {
+      if (this.videoObject.remotePeerId === data.remotePeerId) {
         this.videoObject.prependMsg(data);
       }
     });
