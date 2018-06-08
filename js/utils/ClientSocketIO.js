@@ -64,11 +64,11 @@ export default class {
       console.log(`User ${data.from} is calling you`);
       console.log(`Id of the created room is ${data.roomId}`);
       this.playAlert();
-      launchNativeNotification(`User ${data.remotePeerName} is calling you`);
-      // Get remote peer's profile image
-      var avatarURL = getAvatarBgImage(data.avatarHashes);
       // Boolean variable, which will tell us from where the call was initiated
       this.fromWidget = data.fromWidget;
+      launchNativeNotification(this.fromWidget ? `${data.remotePeerName} is calling you` : `User ${data.remotePeerName} is calling you`);
+      // Get remote peer's profile image
+      var avatarURL = getAvatarBgImage(data.avatarHashes);
       // Create modal with two options Accept and Decline
       this.incomingCallObject = this.createIncomingCallModal(this.webRtc, data.roomId, data.from, data.remotePeerName, data.listingName, avatarURL);
     });
