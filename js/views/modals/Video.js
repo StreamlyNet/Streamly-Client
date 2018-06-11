@@ -261,6 +261,7 @@ export default class extends BaseModal {
 
   onClosingModal() {
     clearInterval(window.callDurationInterval);
+    this.clearFailTimer();
     window.callDurationNumber = 0;
     window.centPerMinuteNumber = 0;
     if (this.webRTC) {
@@ -340,8 +341,8 @@ export default class extends BaseModal {
   };
 
   clearFailTimer() {
-    console.log('Clearing fail timer');
     if (this.failTimer) {
+      console.log('Clearing fail timer');
       clearTimeout(this.failTimer);
       this.failTimer = null;
     }
