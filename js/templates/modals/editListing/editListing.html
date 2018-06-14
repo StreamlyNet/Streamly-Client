@@ -23,6 +23,9 @@
           print(`<a class="js-scrollLink tab row ${ob.selectedNavTabIndex === index ? 'active' : ''}">${tabName}</a>`)
         });
       %>
+      <% if (!ob.showWidget) {
+        print(`<a class="js-scrollLink tab row ${ob.selectedNavTabIndex === 5 ? 'active' : ''}">Widget</a>`)
+      } %>
     </div>
   </div>
   <div class="flexExpand posR tabContent">
@@ -147,7 +150,45 @@
         <div class="js-couponsContainer couponsContainer"></div>
         <a class="btn clrP clrBr clrSh2 btnAddCoupon js-btnAddCoupon"><%= ob.polyT('editListing.btnAddCoupon') %></a>
       </section>
-
+    <% if (!ob.showWidget) { %>
+      <section class="js-scrollToSection contentBox padMd clrP clrBr clrSh3 tx3 couponsSection js-couponsSection">
+        <h2 class="h4 clrT">Widget</h2>
+        <hr class="clrBr rowMd" />
+        <div class="widgetContainer">
+          <div class="widgetSourceCode hide">
+            <h3 class="h4 clrT">
+              <span>
+                <b>Step 1:</b> Include the following script at the end of your website's body tag. It will load the essentials of Streamly's widget.
+              </span>
+            </h3>
+            <pre class="language-markup sourceFunction">
+                <code class="language-markup">
+                  &lt;script&gt;
+                    (function() {
+                      var tag = document.createElement('script');
+                      tag.src = "https://video.streamly.net/widget/streamly/api/clientScreen.js";
+                      var firstScriptTag = document.getElementsByTagName('script')[0];
+                      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                    })();
+                  &lt;/script&gt;
+                </code>
+            </pre>
+            <h3 class="h4 clrT">
+              <span>
+                <b>Step 2:</b>
+                Add the next button wherever you want on your side
+              </span>
+            </h3>
+            <pre class="language-markup">
+              <code class="language-markup">
+                &lt;button class="streamlyBtn" data-remote-store-name="<%= ob.storeName%>" data-listing-name="<%= ob.item.title%>" data-peer-id="<%= ob.peerId %>"&gt;Contact store&lt;/button&gt;
+              </code>
+            </pre>
+          </div>
+        </div>
+        <a class="btn clrP clrBr clrSh2 js-widgetShow">Show code</a>
+      </section>
+      <% } %>
       <div class="contentBox padMd clrP clrBr clrSh3">
         <div class="flexHRight flexVCent gutterH">
           <a class="txU js-viewListing js-viewListingWrap <% if (ob.createMode) print('hide') %>"><%= ob.polyT('editListing.viewListingLink') %></a>

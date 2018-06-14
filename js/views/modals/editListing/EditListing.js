@@ -28,6 +28,10 @@ import VariantInventory from './VariantInventory';
 import InventoryManagement from './InventoryManagement';
 import SkuField from './SkuField';
 import { sendData } from '../../../utils/SearchEngineRequests';
+import Prism from 'prismjs';
+import ToolBar from 'prismjs/plugins/toolbar/prism-toolbar';
+import ClipBoard from 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
+import Normalizer from "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace";
 
 export default class extends BaseModal {
   constructor(options = {}) {
@@ -181,12 +185,26 @@ export default class extends BaseModal {
       'keyup .js-variantNameInput': 'onKeyUpVariantName',
       'click .js-scrollToVariantInventory': 'onClickScrollToVariantInventory',
       'click .js-viewListing': 'onClickViewListing',
+      'click .js-widgetShow': 'onClickWidgetShow',
       ...super.events(),
     };
   }
 
   get MAX_PHOTOS() {
     return this.model.get('item').max.images;
+  }
+
+  onClickWidgetShow() {
+    const widgetSourceCode = this.$el.find('.widgetSourceCode');
+    const showCodeBtn = this.$el.find('.js-widgetShow');
+    if (widgetSourceCode.hasClass('hide')) {
+      widgetSourceCode.removeClass('hide');
+      showCodeBtn.text('Hide code');
+    }
+    else {
+      widgetSourceCode.addClass('hide');
+      showCodeBtn.text('Show code');
+    }
   }
 
   onClickReturn() {
@@ -756,7 +774,7 @@ export default class extends BaseModal {
     }
 
     // render so errrors are shown / cleared
-    this.render(!!save);
+    this.render(!!save, !save);
     const $firstErr = this.$('.errorList:first');
     if ($firstErr.length) $firstErr[0].scrollIntoViewIfNeeded();
   }
@@ -1010,7 +1028,7 @@ export default class extends BaseModal {
     super.remove();
   }
 
-  render(restoreScrollPos = true) {
+  render(restoreScrollPos = true, showWidget = this.createMode) {
     let prevScrollPos = 0;
     const item = this.model.get('item');
 
@@ -1052,6 +1070,9 @@ export default class extends BaseModal {
           photos: this.MAX_PHOTOS,
         },
         shouldShowVariantInventorySection: this.shouldShowVariantInventorySection,
+        storeName: app.profile.get('name'),
+        peerId: app.profile.id,
+        showWidget: showWidget,
         ...this.model.toJSON(),
       }));
 
@@ -1296,6 +1317,21 @@ export default class extends BaseModal {
         }
       }
     });
+
+    // If modal is open, source code in widget section should be highlighted once
+    // more, because we have rerendered the whole template and its current content
+    // is strings
+    if ($('.modal.editListing').length !== 0) {
+      new Normalizer({
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+      });
+
+      Prism.highlightAll();
+
+    }
 
     return this;
   }

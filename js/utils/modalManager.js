@@ -7,6 +7,12 @@ import DebugLog from '../views/modals/DebugLog';
 import ModeratorDetails from '../views/modals/moderatorDetails';
 import Wallet from '../views/modals/wallet/Wallet';
 import Settings from '../views/modals/Settings/Settings';
+// Importing widget source code generator, toolbar and clipboard are imported
+// so they can be instantiated and automatically connect to Prism object
+import Prism from 'prismjs';
+import ToolBar from 'prismjs/plugins/toolbar/prism-toolbar';
+import ClipBoard from 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
+import Normalizer from 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
 
 let aboutModal;
 let settingsModal;
@@ -35,6 +41,15 @@ export function launchEditListingModal(modalOptions = {}) {
   const editListingModal = new EditListing(modalOptions)
     .render()
     .open();
+
+  new Normalizer({
+    'remove-trailing': true,
+    'remove-indent': true,
+    'left-trim': true,
+    'right-trim': true,
+  });
+
+  Prism.highlightAll();
 
   return editListingModal;
 }
