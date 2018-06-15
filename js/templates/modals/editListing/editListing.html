@@ -24,7 +24,7 @@
         });
       %>
       <% if (!ob.showWidget) {
-        print(`<a class="js-scrollLink tab row ${ob.selectedNavTabIndex === 5 ? 'active' : ''}">Widget</a>`)
+        print(`<a class="js-scrollLink tab row ${ob.selectedNavTabIndex === 5 ? 'active' : ''}">Embed Widget</a>`)
       } %>
     </div>
   </div>
@@ -152,15 +152,21 @@
       </section>
     <% if (!ob.showWidget) { %>
       <section class="js-scrollToSection contentBox padMd clrP clrBr clrSh3 tx3 couponsSection js-couponsSection">
-        <h2 class="h4 clrT">Widget</h2>
+        <h2 class="h4 clrT">Embed Widget</h2>
         <hr class="clrBr rowMd" />
         <div class="widgetContainer">
           <div class="widgetSourceCode hide">
-            <h3 class="h4 clrT">
-              <span>
-                <b>Step 1:</b> Include the following script at the end of your website's body tag. It will load the essentials of Streamly's widget.
-              </span>
-            </h3>
+            <p>
+              Officially we support the following browsers:
+              <ul>
+                <li>Chrome</li>
+                <li>Firefox</li>
+                <li>Safari 11 and above</li>
+              </ul>
+            </p>
+            <p>
+                <b>Step 1:</b> Include the following script at the end of your website's body tag. It will load Streamly's essentials.
+            </p>
             <pre class="language-markup sourceFunction">
                 <code class="language-markup">
                   &lt;script&gt;
@@ -173,12 +179,12 @@
                   &lt;/script&gt;
                 </code>
             </pre>
-            <h3 class="h4 clrT">
+            <p>
               <span>
                 <b>Step 2:</b>
-                Add the next button wherever you want on your side
+                Add the following button wherever you want on your website.
               </span>
-            </h3>
+            </p>
             <pre class="language-markup">
               <code class="language-markup">
                 &lt;button class="streamlyBtn" data-remote-store-name="<%= ob.storeName%>" data-listing-name="<%= ob.item.title%>" data-peer-id="<%= ob.peerId %>"&gt;Contact store&lt;/button&gt;
