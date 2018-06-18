@@ -125,15 +125,16 @@ ListingSchema.statics.getMaxReputationAndPrice = function(callback) {
 }
 
 ListingSchema.query.byTag = function(tagArr) {
-    return this.find({'searchContext.tags': {'$all': tagArr}})
+    return this.find({$and: [{censored: {$ne: true}}, {'searchContext.tags': {'$all': tagArr}}]})
 }
 
 ListingSchema.query.byWord = function(wordArr) {
-    return this.find({'searchContext.words': {'$all': wordArr}})
+    return this.find({$and: [{censored: {$ne: true}}, {'searchContext.words': {'$all': wordArr}}]})
 }
 
 ListingSchema.query.byTagAndWord = function(tagArr, wordArr) {
     return this.find({$and:[
+                        {censored: {$ne: true}},
                         {'searchContext.tags': {$all: tagArr}},
                         {'searchContext.words': {$all: wordArr}}
                       ]})

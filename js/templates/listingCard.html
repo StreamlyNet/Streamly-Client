@@ -8,18 +8,16 @@
      %>
 <div class="gridViewContent posR <%= isAvailable %>">
   <div class="listingImage" style="background-image: url(<%= ob.getServerUrl(`ob/images/${ob.isHiRez() ? ob.thumbnail.medium : ob.thumbnail.small}`) %>), url('../imgs/defaultItem.png')">
-    <% if (ob.admin && ob.isFromDiscoveryView) { %>
+    <% if (ob.ownListing) { %>
       <div class="editOverlay overlayPanel pad">
         <div class="overlayPanelInner"></div>
-        <div class="flex gutterHSm">
-          <div class="posR">
-            <a class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-censor' data-tip="Censor listing"><span class="	ion-trash-b"></span></a>
+        <% if (ob.admin && ob.isFromDiscoveryView) { %>
+          <div class="flex gutterHSm">
+            <div class="posR">
+              <a class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-censor' data-tip="Censor listing"><span class="	ion-trash-b"></span></a>
+            </div>
           </div>
-        </div>
-      </div>
-    <% } else if (ob.ownListing) { %>
-      <div class="editOverlay overlayPanel pad">
-        <div class="overlayPanelInner"></div>
+        <% } %>
         <div class="flex gutterHSm <%=hideClass%>">
           <button class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-edit' data-tip="<%= ob.polyT('listingCard.editListingTooltip') %>"><span class="ion-edit"></span></button>
           <button class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-clone' data-tip="<%= ob.polyT('listingCard.cloneListingTooltip') %>"><span class="ion-ios-copy"></span></button>
@@ -38,7 +36,18 @@
         </div>
       </div>
     <% } else { %>
-      <div class="reportOverlay overlayPanel padSm js-reportBtnWrapper"></div>
+      <% if (ob.admin && ob.isFromDiscoveryView) { %>
+        <div class="editOverlay overlayPanel pad">
+          <div class="overlayPanelInner"></div>
+            <div class="flex gutterHSm">
+              <div class="posR">
+                <a class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-censor' data-tip="Censor listing"><span class="	ion-trash-b"></span></a>
+              </div>
+            </div>
+        </div>
+      <% } else {%>
+       <div class="reportOverlay overlayPanel padSm js-reportBtnWrapper"></div>
+      <% } %>
     <% } %>
   </div>
   <div class="pad clrBr borderTop posR">

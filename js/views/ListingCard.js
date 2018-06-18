@@ -378,7 +378,7 @@ export default class extends baseVw {
             displayCurrency: app.settings.get('localCurrency'),
             isFromDiscoveryView: this.isFromDiscoveryView,
             slug: this.slug,
-            admin: false,
+            admin: true,
         };
         if(this.price){
             this.price.displayCurrency = app.settings.get('localCurrency');
