@@ -10,7 +10,7 @@ import baseVw from './baseVw';
 import ListingDetail from './modals/listingDetail/Listing';
 import ReportBtn from './components/ReportBtn';
 import Report from './modals/Report';
-import { deleteListing } from '../utils/SearchEngineRequests';
+import { deleteListing, updateCensorship } from '../utils/SearchEngineRequests';
 
 export default class extends baseVw {
   constructor(options = {}) {
@@ -46,6 +46,12 @@ export default class extends baseVw {
     }
     if(opts.isFromDiscoveryView){
         this.isFromDiscoveryView = opts.isFromDiscoveryView;
+    }
+    if (opts.censored) {
+      this.censored = opts.censored;
+    }
+    if (opts.slug) {
+      this.slug = opts.slug;
     }
     // Any provided profile model or vendor info object will also be passed into the
     // listing detail modal.
@@ -117,6 +123,7 @@ export default class extends baseVw {
       'click .js-edit': 'onClickEdit',
       'click .js-delete': 'onClickDelete',
       'click .js-clone': 'onClickClone',
+      'click .js-censor': 'onClickCensor',
       'click .js-userIcon': 'onClickUserIcon',
       'click .js-deleteConfirmed': 'onClickConfirmedDelete',
       'click .js-deleteConfirmCancel': 'onClickConfirmCancel',
@@ -147,6 +154,34 @@ export default class extends baseVw {
       });
 
     e.stopPropagation();
+  }
+
+  onClickCensor(e) {
+    e.stopPropagation();
+    const savingStatusMsg = app.statusBar.pushMessage({
+      msg: 'Updating listing...',
+      type: 'message',
+      duration: 99999999999999,
+    });
+
+    updateCensorship({
+      slug: this.slug,
+      censored: true,
+    }).then(() => {
+      $(e.delegateTarget).addClass('hide');
+      savingStatusMsg.update({
+        msg: 'Updated censorship of listing',
+      });
+
+      setTimeout(() => savingStatusMsg.remove(), 3000);
+    }).fail(() => {
+      savingStatusMsg.update({
+        msg: 'Failed to update censorship of listing',
+        type: 'warning',
+      });
+
+      setTimeout(() => savingStatusMsg.remove(), 3000);
+    });
   }
 
   onClickDelete(e) {
@@ -341,7 +376,9 @@ export default class extends baseVw {
             shipsFreeToMe: this.model.shipsFreeToMe,
             viewType: this.viewType,
             displayCurrency: app.settings.get('localCurrency'),
-            isFromDiscoveryView: this.isFromDiscoveryView
+            isFromDiscoveryView: this.isFromDiscoveryView,
+            slug: this.slug,
+            admin: false,
         };
         if(this.price){
             this.price.displayCurrency = app.settings.get('localCurrency');

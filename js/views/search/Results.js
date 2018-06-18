@@ -52,6 +52,8 @@ export default class extends baseVw {
         reputation: model.attributes.reputation,
         availability: availability,
         isFromDiscoveryView: true,
+        censored:  model.attributes.censored,
+        slug: model.attributes.slug,
       };
 
       return this.createChild(ListingCard, options);

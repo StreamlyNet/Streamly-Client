@@ -10,6 +10,7 @@ const endpoints = {
   getMaxReputationAndPrice: `http://${host}:${port}/listing/maxRepAndPrice`,
   getTagCloud: `http://${host}:${port}/tagcloud/all`,
   updateProfile: `http://${host}:${port}/listing/profile`,
+  updateCensorship: `http://${host}:${port}/listing/censorship`,
 };
 
 export function sendData(data) {
@@ -77,4 +78,12 @@ export function updateProfile(data) {
     data: data,
     type: 'PUT',
   });
+}
+
+export function updateCensorship(data) {
+  return $.ajax({
+    url: endpoints.updateCensorship,
+    type: 'PUT',
+    data: data,
+  })
 }

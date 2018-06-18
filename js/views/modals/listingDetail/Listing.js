@@ -18,7 +18,7 @@ import SocialBtns from '../../components/SocialBtns';
 import { events as listingEvents } from '../../../models/listing/';
 import PopInMessage, { buildRefreshAlertMessage } from '../../components/PopInMessage';
 import { openSimpleMessage } from '../SimpleMessage';
-import { deleteListing } from '../../../utils/SearchEngineRequests';
+import { deleteListing, getListing } from '../../../utils/SearchEngineRequests';
 
 export default class extends BaseModal {
   constructor(options = {}) {
@@ -139,6 +139,7 @@ export default class extends BaseModal {
       'click .js-callBtn': 'callNow',
       'click .js-rating': 'clickRating',
       'change .js-variantSelect': 'onChangeVariantSelect',
+      'click .js-censoreListing': 'onCensoreListing',
       ...super.events(),
     };
   }

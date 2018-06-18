@@ -25,6 +25,9 @@ router.get('/maxRepAndPrice', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+  if (req.body && req.body.slug) {
+    req.body.censored = false;
+  }
   ListingController.createOrUpdateListing(req.body, (err, result) => {
     if(err) {
       return res.status('400').json({error: err})
@@ -58,7 +61,21 @@ router.delete('/', (req, res) => {
 router.put('/profile', (req, res) => {
   ListingController.updateProfile(req.body, (err, result) => {
     if(err) {
-      return res.status('400'.json({error: err}))
+      return res.status('400').json({error: err})
+    }
+
+    return res.status('200').send('Listings updated')
+  })
+})
+
+router.put('/censorship', (req, res) => {
+  ListingController.updateCensorship(req.body, (err, result) => {
+    if (err === 'Listing not found') {
+      return res.status('404').json({error: err});
+    }
+
+    if (err) {
+      return res.status('400').json({error: err})
     }
 
     return res.status('200').send('Listings updated')

@@ -52,7 +52,8 @@ var ListingSchema = new mongoose.Schema({
       tiny: String
     },
     name: String
-  }
+  },
+  censored: Boolean
 })
 
 ListingSchema.statics.changeGlobalVariables = function(reputation, price, isEmpty) {
@@ -139,7 +140,7 @@ ListingSchema.query.byTagAndWord = function(tagArr, wordArr) {
 }
 
 ListingSchema.query.inAll = function(data) {
-  return this.find({})
+  return this.find({censored: {$ne: true}})
 }
 
 ListingSchema.query.filtersAndPagination = function(data, callback) {

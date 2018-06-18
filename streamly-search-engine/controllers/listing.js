@@ -169,6 +169,41 @@ var updateProfile = (body, callback) => {
     callback(null, result);
   })
 }
+
+var updateCensorship = (body, callback) => {
+  var isString = false;
+
+  if (body.censored !== 'true' && body.censored !== 'false') {
+    return callback('Censored parameter must be boolean');
+  }
+  else {
+    isString = true;
+  }
+  if (typeof body.censored !== 'boolean' && !isString) {
+    return callback('Censored parameter must be boolean');
+  }
+  if (typeof body.slug !== 'string') {
+    return callback('Slug parameter must be string');
+  }
+  if (body.censored === 'true') {
+    body.censored = true;
+  }
+  else {
+    body.censored = false;
+  }
+  Listing.findOneAndUpdate({slug: body.slug}, {$set : {censored: body.censored}}, (err, result) => {
+    if (err) {
+      return callback(err)
+    }
+
+    if (result === null) {
+      return callback('Listing not found');
+    }
+
+    callback(null, result);
+  })
+}
+
 module.exports = {
   //fucntions
   getAll: getAll,
@@ -176,5 +211,6 @@ module.exports = {
   deleteListing: deleteListing,
   updateAvailabilityStatus: updateAvailabilityStatus,
   getMaxReputationAndPrice: getMaxReputationAndPrice,
-  updateProfile: updateProfile
+  updateProfile: updateProfile,
+  updateCensorship: updateCensorship,
 }
