@@ -25,9 +25,14 @@ router.get('/maxRepAndPrice', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  if (req.body && req.body.slug) {
+  if (req.body && req.body.slug && req.body.createMode !== 'false') {
     req.body.censored = false;
   }
+
+  if(req.body) {
+    delete req.body.createMode;
+  }
+
   ListingController.createOrUpdateListing(req.body, (err, result) => {
     if(err) {
       return res.status('400').json({error: err})

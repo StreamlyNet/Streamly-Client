@@ -758,6 +758,7 @@ export default class extends BaseModal {
           setTimeout(() => savingStatusMsg.remove(), 6000);
           this.searchData = $.extend(true, {}, this.attrsAtLastSave);
           this.searchData.profile = {};
+          this.searchData.createMode = this.createMode;
           this.searchData.slug = this.model.get('slug');
           this.searchData.profile.avatarHashes = app.profile.get('avatarHashes').attributes;
           this.searchData.profile.peerID = app.profile.id;
