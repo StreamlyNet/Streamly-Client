@@ -8,13 +8,21 @@
      %>
 <div class="gridViewContent posR <%= isAvailable %>">
   <div class="listingImage" style="background-image: url(<%= ob.getServerUrl(`ob/images/${ob.isHiRez() ? ob.thumbnail.medium : ob.thumbnail.small}`) %>), url('../imgs/defaultItem.png')">
-    <% if (ob.ownListing) { %>
+     <% if (ob.ownListing) { %>
       <div class="editOverlay overlayPanel pad">
         <div class="overlayPanelInner"></div>
         <% if (ob.admin && ob.isFromDiscoveryView) { %>
           <div class="flex gutterHSm">
             <div class="posR">
               <a class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-censor' data-tip="Censor listing"><span class="	ion-trash-b"></span></a>
+              <div class="js-censorConfirmedBox confirmBox censorConfirm tx5 arrowBoxBottom clrBr clrP clrT hide">
+                <p>Are you sure you want to censor listing?</p>
+                <hr class="clrBr row" />
+                <div class="flexHRight flexVCent gutterHLg buttonBar">
+                  <a class="js-censorConfirmCancel">Cancel</a>
+                  <a class="btn button--cian js-censorConfirmed">Yes, censor</a>
+                </div>
+              </div>
             </div>
           </div>
         <% } %>
@@ -42,6 +50,14 @@
             <div class="flex gutterHSm">
               <div class="posR">
                 <a class='iconBtnSm clrP clrBr toolTipNoWrap toolTipTop js-censor' data-tip="Censor listing"><span class="	ion-trash-b"></span></a>
+                <div class="js-censorConfirmedBox confirmBox censorConfirm tx5 arrowBoxBottom clrBr clrP clrT hide">
+                  <p>Are you sure you want to censor listing?</p>
+                  <hr class="clrBr row" />
+                  <div class="flexHRight flexVCent gutterHLg buttonBar">
+                    <a class="js-censorConfirmCancel">Cancel</a>
+                    <a class="btn button--cian js-censorConfirmed">Yes, censor</a>
+                  </div>
+                </div>
               </div>
             </div>
         </div>

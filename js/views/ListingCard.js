@@ -128,35 +128,23 @@ export default class extends baseVw {
       'click .js-deleteConfirmed': 'onClickConfirmedDelete',
       'click .js-deleteConfirmCancel': 'onClickConfirmCancel',
       'click .js-deleteConfirmedBox': 'onClickDeleteConfirmBox',
+      'click .js-censorConfirmCancel': 'onClickConfirmCensorCancel',
+      'click .js-censorConfirmed': 'onClickConfirmedCensor',
+      'click .js-censorConfirmedBox': 'onClickCensorConfirmBox',
       click: 'onClick',
     };
   }
 
-  onDocumentClick() {
-    this.getCachedEl('.js-deleteConfirmedBox').addClass('hide');
-    this.deleteConfirmOn = false;
-  }
-
-  onClickEdit(e) {
-    app.loadingModal.open();
-
-    this.fetchFullListing()
-      .done(xhr => {
-        if (xhr.statusText === 'abort' || this.isRemoved()) return;
-
-        launchEditListingModal({
-          model: this.fullListing,
-        });
-      })
-      .always(() => {
-        if (this.isRemoved()) return;
-        app.loadingModal.close();
-      });
-
+  onClickCensor(e) {
+    $(e.delegateTarget).find('.js-censorConfirmedBox').removeClass('hide');
     e.stopPropagation();
   }
 
-  onClickCensor(e) {
+  onClickConfirmCensorCancel(e) {
+    $(e.delegateTarget).find('.js-censorConfirmedBox').addClass('hide');
+  }
+
+  onClickConfirmedCensor(e) {
     e.stopPropagation();
     const savingStatusMsg = app.statusBar.pushMessage({
       msg: 'Updating listing...',
@@ -182,6 +170,34 @@ export default class extends baseVw {
 
       setTimeout(() => savingStatusMsg.remove(), 3000);
     });
+  }
+
+  onClickCensorConfirmBox(e) {
+    e.stopPropagation();
+  }
+
+  onDocumentClick() {
+    this.getCachedEl('.js-deleteConfirmedBox').addClass('hide');
+    this.deleteConfirmOn = false;
+  }
+
+  onClickEdit(e) {
+    app.loadingModal.open();
+
+    this.fetchFullListing()
+      .done(xhr => {
+        if (xhr.statusText === 'abort' || this.isRemoved()) return;
+
+        launchEditListingModal({
+          model: this.fullListing,
+        });
+      })
+      .always(() => {
+        if (this.isRemoved()) return;
+        app.loadingModal.close();
+      });
+
+    e.stopPropagation();
   }
 
   onClickDelete(e) {
@@ -378,7 +394,7 @@ export default class extends baseVw {
             displayCurrency: app.settings.get('localCurrency'),
             isFromDiscoveryView: this.isFromDiscoveryView,
             slug: this.slug,
-            admin: true,
+            admin: false,
         };
         if(this.price){
             this.price.displayCurrency = app.settings.get('localCurrency');
